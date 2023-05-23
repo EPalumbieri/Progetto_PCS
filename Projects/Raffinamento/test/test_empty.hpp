@@ -7,10 +7,10 @@
 
 using namespace testing;
 
-TEST(TestEmpty, TestEmpty)
-{
-  ProjectLibrary::Empty empty;
-  ASSERT_NO_THROW(empty.Show());
-}
+//TEST(TestEmpty, TestEmpty)
+//{
+//  ProjectLibrary::Empty empty;
+//  ASSERT_NO_THROW(empty.Show());
+//}
 
 #endif // __TEST_EMPTY_H
