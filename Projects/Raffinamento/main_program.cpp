@@ -4,15 +4,29 @@
 #include "map"
 
 using namespace std;
+using namespace Eigen;
 using namespace ProjectLibrary;
-
 
 int main()
 {
+  TriangularMesh mesh;
 
-  Triangle mesh;
+  if(!ImportCell2Ds(mesh))
+  {
+    return 1;
+  }
+  else
+  {
+    cout << "Cell2D marker:" << endl;
+    for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
+    {
+      cout << "key:\t" << it -> first << "\t values:";
+      for(const unsigned int id : it -> second)
+        cout << "\t" << id;
 
-  ImportMesh(mesh);
+      cout << endl;
+    }
+    return 0;
+  }
 
-  return 0;
 }

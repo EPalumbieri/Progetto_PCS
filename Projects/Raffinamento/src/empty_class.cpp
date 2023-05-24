@@ -1,30 +1,16 @@
 #include "empty_class.hpp"
+#include <iostream>
+#include "Eigen/Eigen"
+#include <fstream>
+#include "map"
 
-using namespace ProjectLibrary;
-
-bool ImportMesh(Triangle& mesh)
+using namespace std;
+using namespace Eigen;
+namespace ProjectLibrary
 {
-  if(!ImportCell2Ds(mesh))
-  {
-    return false;
-  }
-  else
-  {
-    cout << "Cell2D:" << endl;
-    for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++)
-    {
-      cout << "key:\t" << it -> first << "\t values:";
-      for(const unsigned int id : it -> second)
-        cout << "\t" << id;
-
-      cout << endl;
-    }
-  }
-  return true;
-}
 
 // ***************************************************************************
-bool ImportCell0Ds(Vertex& mesh)
+bool ImportCell0Ds(TriangularMesh& mesh)
 {
 
   ifstream file;
@@ -78,8 +64,8 @@ bool ImportCell0Ds(Vertex& mesh)
   file.close();
   return true;
 }
-// ***************************************************************************
-bool ImportCell1Ds(Edge& mesh)
+//// ***************************************************************************
+bool ImportCell1Ds(TriangularMesh& mesh)
 {
 
   ifstream file;
@@ -135,7 +121,7 @@ bool ImportCell1Ds(Edge& mesh)
 
 
 // ***************************************************************************
-bool ImportCell2Ds(Triangle& mesh)
+bool ImportCell2Ds(TriangularMesh& mesh)
 {
 
   ifstream file;
@@ -178,10 +164,7 @@ bool ImportCell2Ds(Triangle& mesh)
     for(unsigned int i = 0; i < 3; i++)
       {
       converter >> edges[i];
-      if (mesh.Adjacency.find(edges[i]) == mesh.Adjacency.end()) //se non c'è nella mappa
-          mesh.Adjacency.insert({edges[i],{id}}); //aggiungo l'id del lato e lo associo all'id del triangolo
-      else
-          mesh.Adjacency[edges[i]].push_back(id); // aggiungo l'id del triangolo
+      // aggiungo l'id del triangolo
       }
 
     mesh.Cell2DId.push_back(id);
@@ -192,4 +175,9 @@ bool ImportCell2Ds(Triangle& mesh)
   file.close();
   return true;
 }
+}
+ //***************************************************************************
+//bool ImportMesh(TriangularMesh& mesh)
+//{
 
+//}

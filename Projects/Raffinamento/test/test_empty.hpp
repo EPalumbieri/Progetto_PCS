@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "empty_class.hpp"
+//#include "empty_class.hpp"
 
 using namespace testing;
 
