@@ -1,4 +1,4 @@
-list(APPEND raffinamento_headers ${CMAKE_CURRENT_SOURCE_DIR}/empty_class.hpp)
+list(APPEND raffinamento_headers ${CMAKE_CURRENT_SOURCE_DIR}/struct.hpp)
 list(APPEND raffinamento_headers ${CMAKE_CURRENT_SOURCE_DIR}/functions.hpp)
 
 

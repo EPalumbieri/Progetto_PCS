@@ -12,12 +12,15 @@ namespace ProjectLibrary
 // ***************************************************************************
 bool ImportCell0Ds(TriangularMesh& mesh)
 {
+    // Apro il file
+    ifstream file;
+    file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
 
-  ifstream file;
-  file.open("./Cell0Ds.csv");
-
-  if(file.fail())
+    if (file.fail())
+    {
+    cerr<<"file open failed"<< endl;
     return false;
+    }
 
   list<string> listLines;
   string line;
@@ -67,12 +70,15 @@ bool ImportCell0Ds(TriangularMesh& mesh)
 //// ***************************************************************************
 bool ImportCell1Ds(TriangularMesh& mesh)
 {
+    // Apro il file
+    ifstream file;
+    file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
-  ifstream file;
-  file.open("./Cell1Ds.csv");
-
-  if(file.fail())
+    if (file.fail())
+    {
+    cerr<<"file open failed"<< endl;
     return false;
+    }
 
   list<string> listLines;
   string line;
@@ -122,13 +128,16 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 
 // ***************************************************************************
 bool ImportCell2Ds(TriangularMesh& mesh)
-{
-
+{ 
+  // Apro il file
   ifstream file;
-  file.open("./Cell2Ds.csv");
+  file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
 
-  if(file.fail())
-    return false;
+  if (file.fail())
+  {
+  cerr<<"file open failed"<< endl;
+  return false;
+  }
 
   list<string> listLines;
   string line;
@@ -162,11 +171,13 @@ bool ImportCell2Ds(TriangularMesh& mesh)
     for(unsigned int i = 0; i < 3; i++)
       converter >> vertices[i];
     for(unsigned int i = 0; i < 3; i++)
-      {
-      converter >> edges[i];
-      // aggiungo l'id del triangolo
-      }
-
+    {
+          converter >> edges[i];
+          if (mesh.Adjacency.find(edges[i]) == mesh.Adjacency.end()) //se non c'è nella mappa
+              mesh.Adjacency.insert({edges[i],{id}}); //aggiungo l'id del lato e lo associo all'id del triangolo
+          else
+              mesh.Adjacency[edges[i]].push_back(id); // aggiungo l'id del triangolo
+    }
     mesh.Cell2DId.push_back(id);
     mesh.Cell2DVertices.push_back(vertices);
     mesh.Cell2DEdges.push_back(edges);
@@ -176,8 +187,5 @@ bool ImportCell2Ds(TriangularMesh& mesh)
   return true;
 }
 }
- //***************************************************************************
-//bool ImportMesh(TriangularMesh& mesh)
-//{
 
-//}
+

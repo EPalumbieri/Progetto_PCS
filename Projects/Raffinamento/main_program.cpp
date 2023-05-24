@@ -17,7 +17,7 @@ int main()
   }
   else
   {
-    cout << "Cell2D marker:" << endl;
+    cout << "Mappa Adiacenze: " << endl;
     for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
     {
       cout << "key:\t" << it -> first << "\t values:";
