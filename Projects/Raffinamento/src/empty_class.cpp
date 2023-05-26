@@ -14,7 +14,7 @@ bool ImportCell0Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    file.open("C:/Users/Elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
 
     if (file.fail())
     {
@@ -55,14 +55,6 @@ bool ImportCell0Ds(TriangularMesh& mesh)
     mesh.Cell0DId.push_back(id);
     mesh.Cell0DCoordinates.push_back(coord);
 
-    if( marker != 0)
-    {
-      if (mesh.Cell0DMarkers.find(marker) == mesh.Cell0DMarkers.end())
-        mesh.Cell0DMarkers.insert({marker, {id}});
-      else
-        mesh.Cell0DMarkers[marker].push_back(id);
-    }
-
   }
   file.close();
   return true;
@@ -72,7 +64,7 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+    file.open("C:/Users/Elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
     {
@@ -111,13 +103,6 @@ bool ImportCell1Ds(TriangularMesh& mesh)
     mesh.Cell1DId.push_back(id);
     mesh.Cell1DVertices.push_back(vertices);
 
-    if( marker != 0)
-    {
-      if (mesh.Cell1DMarkers.find(marker) == mesh.Cell1DMarkers.end())
-        mesh.Cell1DMarkers.insert({marker, {id}});
-      else
-        mesh.Cell1DMarkers[marker].push_back(id);
-    }
   }
 
   file.close();
@@ -131,7 +116,7 @@ bool ImportCell2Ds(TriangularMesh& mesh)
 { 
   // Apro il file
   ifstream file;
-  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  file.open("C:/Users/Elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
 
   if (file.fail())
   {
@@ -196,9 +181,6 @@ double Area(TriangularMesh& mesh,unsigned int& idT)
 
   //vertice 1
   Vector2d supp = mesh.Cell0DCoordinates[vertici[0]];
-  double coorX = static_cast<double>(supp[0]);//traforma in double
-  double coorY= static_cast<double>(supp[1]);
-
 
   std::array<double, 2> coord1;
   coord1[0]=supp[0];
@@ -206,8 +188,6 @@ double Area(TriangularMesh& mesh,unsigned int& idT)
 
   //vertice 2
   supp = mesh.Cell0DCoordinates[vertici[1]];
-  coorX = static_cast<double>(supp[0]);
-  coorY= static_cast<double>(supp[1]);
 
   std::array<double, 2> coord2;
   coord2[0]=supp[0];
@@ -215,8 +195,6 @@ double Area(TriangularMesh& mesh,unsigned int& idT)
 
   //vertice 3
   supp = mesh.Cell0DCoordinates[vertici[2]];
-  coorX = static_cast<double>(supp[0]);
-  coorY= static_cast<double>(supp[1]);
 
   std::array<double, 2> coord3;
   coord3[0]=supp[0];
@@ -230,8 +208,6 @@ double Area(TriangularMesh& mesh,unsigned int& idT)
 };
 
 
-
-//____________________
 }
 
 

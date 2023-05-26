@@ -1,4 +1,5 @@
 #include "struct.hpp"
+#include "functions.hpp"
 
 #include "Eigen/Eigen"
 #include <fstream>
