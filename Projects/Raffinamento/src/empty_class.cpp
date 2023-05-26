@@ -14,7 +14,7 @@ bool ImportCell0Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-    file.open("C:/Users/Elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
 
     if (file.fail())
     {
@@ -64,7 +64,7 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-    file.open("C:/Users/Elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
     {
@@ -116,7 +116,7 @@ bool ImportCell2Ds(TriangularMesh& mesh)
 { 
   // Apro il file
   ifstream file;
-  file.open("C:/Users/Elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
 
   if (file.fail())
   {

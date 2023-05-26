@@ -32,12 +32,31 @@ int main()
       cout << endl;
     }
   }
+//  std::pair<unsigned int, double>
+//  sort(pippo.begin(),pippo.end())
 
+  vector<ArrIdArea> vettoreAree;
 
   for (unsigned int i=0; i< mesh.NumberCell2D; i++)
-  {double area= Area(mesh,mesh.Cell2DId[i]);
-    cout <<mesh.Cell2DId[i]<<':'<< area << endl;
+  { ArrIdArea pippo;
+    pippo.idTr=mesh.Cell2DId[i] ;
+    pippo.areaTr =Area(mesh,mesh.Cell2DId[i]);
+    vettoreAree.push_back(pippo);
   };
+
+
+  cout << "Vettore prima dell'ordinamento:" << endl;
+  for (const ArrIdArea& elemento : vettoreAree) {
+  cout << "ID: " << elemento.idTr << ", Area: " << elemento.areaTr << endl;
+  }
+ cout << "nnnnn" << endl;
+  // Ordinamento del vettore in base al membro "area"
+ sort(vettoreAree.begin(), vettoreAree.end(),greater<ArrIdArea>());
+
+  cout << "Vettore dopo ordinamento:" << endl;
+  for (const ArrIdArea& elemento : vettoreAree) {
+  cout << "ID: " << elemento.idTr << ", Area: " << elemento.areaTr << endl;
+  }
 
 };
 
