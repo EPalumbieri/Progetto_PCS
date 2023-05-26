@@ -1,4 +1,5 @@
-#include "empty_class.hpp"
+#include "struct.hpp"
+
 #include "Eigen/Eigen"
 #include <fstream>
 #include "map"
@@ -10,6 +11,9 @@ using namespace ProjectLibrary;
 int main()
 {
   TriangularMesh mesh;
+
+    ImportCell0Ds(mesh);
+    ImportCell1Ds(mesh);
 
   if(!ImportCell2Ds(mesh))
   {
@@ -26,7 +30,13 @@ int main()
 
       cout << endl;
     }
-    return 0;
   }
 
-}
+
+  for (unsigned int i=0; i< mesh.NumberCell2D; i++)
+  {double area= Area(mesh,mesh.Cell2DId[i]);
+    cout <<mesh.Cell2DId[i]<<':'<< area << endl;
+  };
+
+};
+

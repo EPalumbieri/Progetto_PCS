@@ -30,7 +30,7 @@ struct TriangularMesh
     std::vector<array<unsigned int, 3>> Cell2DVertices = {}; ///< Cell2D Vertices indices, size 1 x NumberCell2DVertices[NumberCell2D]
     std::vector<array<unsigned int, 3>> Cell2DEdges = {}; ///< Cell2D Cell1D indices, size 1 x NumberCell2DEdges[NumberCell2D]
     std::map<unsigned int, list<unsigned int>> Adjacency = {}; // id del lato collegato a id dei due triangoli ad esso adiacenti
-};
+   };
 
 //    ///\brief Import the triangular mesh and test if the mesh is correct
 //    ///\param mesh: a TriangularMesh struct
@@ -51,6 +51,13 @@ struct TriangularMesh
     ///\param mesh: a TriangularMesh struct
     ///\return the result of the reading, true if is success, false otherwise
     bool ImportCell2Ds(TriangularMesh& mesh);
+
+
+    ///\brief dato l'id del triangolo vogliamo estrarre l'area del triangolo
+    ///\param mesh: a TriangularMesh struct s
+    ///\param idT: è l'id del triangolo, nella struct sono degli unsigned int quindi gli passo una variabile di sto tipo
+    ///\return the result of the reading, true if is success, false otherwise
+    double Area(TriangularMesh& mesh,unsigned int& idT);
 
 
 }

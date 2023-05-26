@@ -1,20 +1,20 @@
-#include "empty_class.hpp"
+#include "struct.hpp"
 #include <iostream>
 #include "Eigen/Eigen"
 #include <fstream>
-#include "map"
+//#include "map"
 
 using namespace std;
 using namespace Eigen;
 namespace ProjectLibrary
 {
+//_________________________________________________________
 
-// ***************************************************************************
 bool ImportCell0Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-    file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
 
     if (file.fail())
     {
@@ -72,7 +72,7 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-    file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
     {
@@ -131,7 +131,7 @@ bool ImportCell2Ds(TriangularMesh& mesh)
 { 
   // Apro il file
   ifstream file;
-  file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
 
   if (file.fail())
   {
@@ -157,6 +157,7 @@ bool ImportCell2Ds(TriangularMesh& mesh)
   mesh.Cell2DId.reserve(mesh.NumberCell2D);
   mesh.Cell2DVertices.reserve(mesh.NumberCell2D);
   mesh.Cell2DEdges.reserve(mesh.NumberCell2D);
+
 
   for (const string& line : listLines)
   {
@@ -186,6 +187,51 @@ bool ImportCell2Ds(TriangularMesh& mesh)
   file.close();
   return true;
 }
+
+//____________________________________________________
+
+double Area(TriangularMesh& mesh,unsigned int& idT)
+{
+  array<unsigned int, 3> vertici = mesh.Cell2DVertices[idT];
+
+  //vertice 1
+  Vector2d supp = mesh.Cell0DCoordinates[vertici[0]];
+  double coorX = static_cast<double>(supp[0]);//traforma in double
+  double coorY= static_cast<double>(supp[1]);
+
+
+  std::array<double, 2> coord1;
+  coord1[0]=supp[0];
+  coord1[1]=supp[1];
+
+  //vertice 2
+  supp = mesh.Cell0DCoordinates[vertici[1]];
+  coorX = static_cast<double>(supp[0]);
+  coorY= static_cast<double>(supp[1]);
+
+  std::array<double, 2> coord2;
+  coord2[0]=supp[0];
+  coord2[1]=supp[1];
+
+  //vertice 3
+  supp = mesh.Cell0DCoordinates[vertici[2]];
+  coorX = static_cast<double>(supp[0]);
+  coorY= static_cast<double>(supp[1]);
+
+  std::array<double, 2> coord3;
+  coord3[0]=supp[0];
+  coord3[1]=supp[1];
+
+  double area =(coord1[0] * (coord2[1] - coord3[1]) +coord2[0] * (coord3[1] - coord1[1]) + coord3[0] * (coord1[1] - coord2[1]));
+
+  area= abs(area);
+  area= area*0.5 ;
+  return area;
+};
+
+
+
+//____________________
 }
 
 
