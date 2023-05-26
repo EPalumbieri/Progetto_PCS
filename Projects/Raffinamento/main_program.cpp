@@ -58,5 +58,8 @@ int main()
   cout << "ID: " << elemento.idTr << ", Area: " << elemento.areaTr << endl;
   }
 
+
+
+
 };
 

@@ -24,7 +24,7 @@ struct TriangularMesh
     std::vector<Vector2i> Cell1DVertices = {}; ///< Cell1D vertices indices, size 2 x NumberCell1D (fromId,toId)
 
     unsigned int NumberCell2D = 0; ///< number of Cell2D
-    //std::vector<bool> eliminato  = {}
+    //std::vector<bool> eliminato  =
     std::vector<unsigned int> Cell2DId = {}; ///< Cell2D id, size 1 x NumberCell2D
     std::vector<array<unsigned int, 3>> Cell2DVertices = {}; ///< Cell2D Vertices indices, size 1 x NumberCell2DVertices[NumberCell2D]
     std::vector<array<unsigned int, 3>> Cell2DEdges = {}; ///< Cell2D Cell1D indices, size 1 x NumberCell2DEdges[NumberCell2D]
@@ -76,7 +76,8 @@ struct TriangularMesh
    ///\return the result of the reading, true if is success, false otherwise
    double Area(TriangularMesh& mesh,unsigned int& idT);
 
-
+//----* lunghezza lato funzione input id lato  prende le coordinate e calcolo la lunghezza del lato, input: id tra
+//----* vertice adiacente: input: id triangolo, id lato lungo ----> output
 
 }
 #endif // __EMPTY_H
