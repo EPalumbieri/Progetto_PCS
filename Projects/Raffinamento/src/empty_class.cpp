@@ -1,4 +1,5 @@
-#include "empty_class.hpp"
+#include "struct.hpp"
+#include "functions.hpp"
 #include <iostream>
 #include "Eigen/Eigen"
 #include <fstream>
@@ -14,11 +15,11 @@ bool ImportCell0Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-    file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
 
     if (file.fail())
     {
-    cerr<<"file open failed"<< endl;
+    cerr<<"file open failed 0"<< endl;
     return false;
     }
 
@@ -72,11 +73,11 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-    file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
     {
-    cerr<<"file open failed"<< endl;
+    cerr<<"file open failed 1"<< endl;
     return false;
     }
 
@@ -131,11 +132,11 @@ bool ImportCell2Ds(TriangularMesh& mesh)
 { 
   // Apro il file
   ifstream file;
-  file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
 
   if (file.fail())
   {
-  cerr<<"file open failed"<< endl;
+  cerr<<"file open failed 2"<< endl;
   return false;
   }
 

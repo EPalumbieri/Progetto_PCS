@@ -1,4 +1,6 @@
-#include "empty_class.hpp"
+#include "struct.hpp"
+#include "functions.hpp"
+#include "longest_edge"
 #include "Eigen/Eigen"
 #include <fstream>
 #include "map"
