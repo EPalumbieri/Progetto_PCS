@@ -36,8 +36,6 @@ int main()
       cout << endl;
     }
   }
-//  std::pair<unsigned int, double>
-//  sort(pippo.begin(),pippo.end())
 
   vector<ArrIdArea> vettoreAree;
 
@@ -49,11 +47,6 @@ int main()
   };
 
 
-  cout << "Vettore prima dell'ordinamento:" << endl;
-  for (const ArrIdArea& elemento : vettoreAree) {
-  cout << "ID: " << elemento.idTr << ", Area: " << elemento.areaTr << endl;
-  }
- cout << "nnnnn" << endl;
   // Ordinamento del vettore in base al membro "area"
  sort(vettoreAree.begin(), vettoreAree.end(),greater<ArrIdArea>());
 

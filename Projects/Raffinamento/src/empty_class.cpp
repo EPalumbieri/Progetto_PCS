@@ -174,8 +174,8 @@ bool ImportCell2Ds(TriangularMesh& mesh)
       converter >> vertices[i];
     for(unsigned int i = 0; i < 3; i++)
     {
-          converter >> edges[i];
-          if (mesh.Adjacency.find(edges[i]) == mesh.Adjacency.end()) //se non c'è nella mappa
+      converter >> edges[i];
+         if (mesh.Adjacency.find(edges[i]) == mesh.Adjacency.end()) //se non c'è nella mappa
               mesh.Adjacency.insert({edges[i],{id}}); //aggiungo l'id del lato e lo associo all'id del triangolo
           else
               mesh.Adjacency[edges[i]].push_back(id); // aggiungo l'id del triangolo
@@ -195,35 +195,82 @@ double Area(TriangularMesh& mesh,unsigned int& idT)
 {
   array<unsigned int, 3> vertici = mesh.Cell2DVertices[idT];
 
-  //vertice 1
-  Vector2d supp = mesh.Cell0DCoordinates[vertici[0]];
-
-  std::array<double, 2> coord1;
-  coord1[0]=supp[0];
-  coord1[1]=supp[1];
-
-  //vertice 2
-  supp = mesh.Cell0DCoordinates[vertici[1]];
-
-  std::array<double, 2> coord2;
-  coord2[0]=supp[0];
-  coord2[1]=supp[1];
-
-  //vertice 3
-  supp = mesh.Cell0DCoordinates[vertici[2]];
-
-  std::array<double, 2> coord3;
-  coord3[0]=supp[0];
-  coord3[1]=supp[1];
+  Vector2d coord1 = mesh.Cell0DCoordinates[vertici[0]];
+  Vector2d coord2 =mesh.Cell0DCoordinates[vertici[1]];
+  Vector2d coord3 = mesh.Cell0DCoordinates[vertici[2]];
 
   double area =(coord1[0] * (coord2[1] - coord3[1]) +coord2[0] * (coord3[1] - coord1[1]) + coord3[0] * (coord1[1] - coord2[1]));
-
   area= abs(area);
   area= area*0.5 ;
+
   return area;
 };
 
+//____________________________________________________
 
-}
+double LunghezzaLato(TriangularMesh& mesh,unsigned int& idL)
+ {
+  Vector2i vertici = mesh.Cell1DVertices[idL];
+  Vector2d coord1 = mesh.Cell0DCoordinates[vertici[0]];
+  Vector2d coord2 = mesh.Cell0DCoordinates[vertici[1]];
+
+  double lunghezza = sqrt((coord2[0] - coord1[0]) * (coord2[0] - coord1[0]) + (coord2[1] - coord1[1]) * (coord2[1] - coord1[1]));
+
+  return lunghezza;
+  };
+
+ //----------------------------------------------------------------------------*
+
+ unsigned int LatoLungo(TriangularMesh& mesh,unsigned int& idT)
+  {
+    array<unsigned int, 3> idLati = mesh.Cell2DEdges[idT];
+    // Calcola la lunghezza di ogni lato e determina l'id del lato più lungo
+    double lunghezzaMax = 0.0;
+    unsigned int idLatoLungo = 0;
+
+    for (unsigned int i = 0; i < 3; i++) {
+       unsigned int idLato = idLati[i];
+       double lunghezza = LunghezzaLato(mesh, idLato);
+
+    //calcolo il lato massimo
+    if (lunghezza > lunghezzaMax) {
+          lunghezzaMax = lunghezza;
+          idLatoLungo = idLato;
+    }
+  }
+
+  return idLatoLungo;
+  }
+//*-----------------------------------------------
+
+ unsigned int VerticeOpposto(TriangularMesh& mesh,unsigned int& idT,unsigned int& idL)
+  {
+   Vector2i idVertici = mesh.Cell1DVertices[idL];
+   unsigned int vertice1 = idVertici[0];
+   unsigned int vertice2 = idVertici[1];
+
+   // Ottieni gli id dei tre vertici del triangolo idT considerato
+   array<unsigned int, 3> idVerticiTriangolo = mesh.Cell2DVertices[idT];
+
+   // Cerca l'id del vertice opposto al lato
+   unsigned int verticeOpposto= 0;
+
+   for (unsigned int i = 0; i < 3; i++)
+   {
+    unsigned int idVertice = idVerticiTriangolo[i];
+    if (idVertice != vertice1 && idVertice != vertice2)
+    {
+     verticeOpposto = idVertice;
+     break;
+    }
+  }
+  return verticeOpposto;
+  };
+
+ //* --------------------------------------------- *
+
+
+
+};
 
 
