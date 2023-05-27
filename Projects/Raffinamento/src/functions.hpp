@@ -23,3 +23,8 @@ namespace ProjectLibrary
 
 }
 #endif // FUNCTIONS_HPP
+
+
+namespace ProjectLibrary
+{
+}
