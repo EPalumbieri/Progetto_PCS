@@ -96,15 +96,16 @@ namespace ProjectLibrary
    ///\return id vertice opposto
    unsigned int VerticeOpposto(TriangularMesh& mesh,unsigned int& idL,unsigned int& idT);
 
-//   ///\brief dato l'id del triangolo, l'id del lato lungo ci restituisce il vertice opposto
-//   ///\param mesh: a TriangularMesh struct
-//   ///\param idL: è l'id del lato
-//   ///\param idT: è l'id del triangolo
-//   ///\return id vertice opposto
-//   unsigned int VerticeOpposto(TriangularMesh& mesh,unsigned int& idL,unsigned int& idT);
-
+   ///\brief calcola punto medio e aggiorna
+   ///\param mesh: a TriangularMesh struct
+   ///\param idL: è l'id del lato
+   ///\return id vertice punto medio
    unsigned int PuntoMedio(TriangularMesh& mesh,unsigned int& idL);
 
+   ///\brief dato l'id del triangolo divede e aggiorna
+   ///\param mesh: a TriangularMesh struct
+   ///\param idT: è l'id del triangolo
+   ///\return taglia
    bool Bisezione(TriangularMesh& mesh,unsigned int& IdT);
 }
 

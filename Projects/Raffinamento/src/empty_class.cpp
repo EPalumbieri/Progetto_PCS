@@ -277,15 +277,17 @@ unsigned int PuntoMedio(TriangularMesh& mesh,unsigned int idL)
 // funzione di bisezione del lato lungo
 bool Bisezione(TriangularMesh& mesh,unsigned int& IdT)
 {
-    int IdLE = LatoLungo(mesh, IdT);
+    unsigned int IdLE = LatoLungo(mesh, IdT);
     cout<<"idle"<<IdLE<<endl;
-    int IdVPM = PuntoMedio(mesh, IdLE);
+    unsigned int IdVPM = PuntoMedio(mesh, IdLE);
     cout<<"idpm"<<IdVPM<<endl;
-    int IdVO = VerticeOpposto(mesh, IdT, IdLE);
+    unsigned int IdVO = VerticeOpposto(mesh, IdT, IdLE);
     cout<<"idvopposto"<<IdVO<<endl;
     Vector2i LatoMO;
     LatoMO(0) = IdVPM;
     LatoMO(1) = IdVO;
+    unsigned int idLatoMO =mesh.NumberCell1D ;
+
 
     mesh.Cell1DVertices.push_back(LatoMO);
     mesh.Cell1DId.push_back(mesh.NumberCell1D);
@@ -294,59 +296,71 @@ bool Bisezione(TriangularMesh& mesh,unsigned int& IdT)
     // creo i lati piccoli
     Vector2i IdVertici = mesh.Cell1DVertices[IdLE];
 
-    int IdV1 = IdVertici(0);
-    Vector2i Lato1M;
-    Lato1M(0) = IdV1;
-    Lato1M(1) = IdVPM;
+    unsigned int IdV1 = IdVertici(0);
+    Vector2i Lato1Mvertici;
+    Lato1Mvertici(0) = IdV1;
+    Lato1Mvertici(1) = IdVPM;
+    unsigned int idLato1M =mesh.NumberCell1D ;
 
-    mesh.Cell1DVertices.push_back(Lato1M);
+    // mi salvo ID per cell2d edge
+
+
+    mesh.Cell1DVertices.push_back(Lato1Mvertici);
     mesh.Cell1DId.push_back(mesh.NumberCell1D);
     mesh.NumberCell1D++;
 
-    int IdV2 = IdVertici(1);
-    Vector2i Lato2M;
-    Lato2M(0) = IdV2;
-    Lato2M(1) = IdVPM;
+    unsigned int IdV2 = IdVertici(1);
+    Vector2i Lato2Mvertici;
+    Lato2Mvertici(0) = IdV2;
+    Lato2Mvertici(1) = IdVPM;
+    unsigned int idLato2M =mesh.NumberCell1D;
 
-    mesh.Cell1DVertices.push_back(Lato1M);
+    mesh.Cell1DVertices.push_back(Lato1Mvertici);
     mesh.Cell1DId.push_back(mesh.NumberCell1D);
     mesh.NumberCell1D++;
+
+
 
     //cerco id di Lato1O e Lato2O
     // cerco i vertici del triangolo
-    Vector3i lati = mesh.Cell2DEdges[IdT]; // so gli id dei lati
+    array<unsigned int, 3> lati = mesh.Cell2DEdges[IdT]; // so gli id dei lati
 
 
     unsigned int Lato1Opp;
     unsigned int Lato2Opp;
     for (unsigned int i = 0; i < 3; i++)
     {   // se il lato preso contiene v1 e non è le, lo prendo, altrimenti prendo l'altro
-        if (lati(i) == IdLE) {} //cioè vado avanti
-        Vector2i vertici = mesh.Cell1DVertices[lati(i)];
-        if (vertici(0) == IdV1 || vertici(1) == IdV1)
+        if (lati[i] != IdLE){ //cioè vado avanti
+
+        Vector2i vertici = mesh.Cell1DVertices[lati[i]];
+        if ( vertici[0] == IdV1 || vertici[1] == IdV1)
         {
-            Lato1Opp = lati(i);
+            Lato1Opp = lati[i];
         }
         if (vertici(0) == IdV2 || vertici(1) == IdV2)
         {
-            Lato2Opp = lati(i);
+            Lato2Opp = lati[i];
         }
+        };
     }
 
 
     //ADESSO CREO I TRIANGOLI
-    // array<unsigned int, 3> vertici1 = [IdV1, IdVOpposto, IdPM];
-    // array<unsigned int, 3> lati1 = [Lato1, Mediana, xx ];
+    array<unsigned int, 3> vertici1 = {IdV1, IdVO, IdVPM};
+    array<unsigned int, 3> lati1 = {Lato1Opp, idLatoMO, idLato1M};
+
     mesh.Cell2DId.push_back(mesh.NumberCell2D); //creo un IdT1
-    mesh.Cell2DVertices.push_back([IdV1, IdVO, IdVPM]);
-    mesh.Cell2DEdges.push_back([Lato1Opp, Lato1M, LatoMO]);
+    mesh.Cell2DVertices.push_back(vertici1);
+    mesh.Cell2DEdges.push_back(lati1);
 
 
-    // array<unsigned int, 3> vertici2 = [IdV2, IdVOpposto, IdPM];
-    // array<unsigned int, 3> lati2 = [Lato2, Mediana, Lato2O];
+    array<unsigned int, 3> vertici2 = {IdV2, IdVO, IdVPM};
+    array<unsigned int, 3> lati2 = {Lato2Opp,idLatoMO, idLato2M};
     mesh.Cell2DId.push_back(mesh.NumberCell2D); //creo un IdT2
-    mesh.Cell2DVertices.push_back([IdV2, IdVOpp, IdVPM]);
-    mesh.Cell2DEdges.push_back([Lato2M, LatoMO, Lato2Opp]);
+    mesh.Cell2DVertices.push_back(vertici2);
+    mesh.Cell2DEdges.push_back(lati2);
+
+    return 0; // zero xk elimini il triangolo bisezionato
 
 }
 

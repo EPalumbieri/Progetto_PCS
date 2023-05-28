@@ -1,11 +1,15 @@
 #ifndef FUNCTIONS_HPP
 #define FUNCTIONS_HPP
 
+#include "struct.hpp"
 using namespace std;
 using namespace Eigen;
 
 namespace ProjectLibrary
 {
+
+
+
 ///\brief Import the Cell0D properties from Cell0Ds.csv file
 ///\param mesh: a TriangularMesh struct
 ///\return the result of the reading, true if is success, false otherwise

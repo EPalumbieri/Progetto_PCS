@@ -55,7 +55,7 @@ int main()
 
 
   // vedo se gira la bisezione per qualche triangolo a caso
-  for (i=0; 1<10; i++)
+  for (unsigned int i=0; 1<10; i++)
   {
     if (Bisezione(mesh,i))
         cout<<"ce l'ho fatta"<<endl;
