@@ -1,13 +1,10 @@
 #include "struct.hpp"
 #include "functions.hpp"
-<<<<<<< HEAD
-#include "longest_edge"
-=======
-
->>>>>>> 9326a2ee5cc08ebd0d45bf3bd5a3af452361f90e
+// #include "refiningfunc.hpp"
 #include "Eigen/Eigen"
 #include <fstream>
 #include "map"
+#include "vector"
 
 using namespace std;
 using namespace Eigen;
@@ -35,6 +32,7 @@ int main()
 
       cout << endl;
     }
+// <<<<<<< Updated upstream
   }
 
   vector<ArrIdArea> vettoreAree;
@@ -48,7 +46,7 @@ int main()
 
 
   // Ordinamento del vettore in base al membro "area"
- sort(vettoreAree.begin(), vettoreAree.end(),greater<ArrIdArea>());
+ sort(vettoreAree.begin(), vettoreAree.end(),greater<ArrIdArea>()); //qui dobbiamo fare il npstro
 
   cout << "Vettore dopo ordinamento:" << endl;
   for (const ArrIdArea& elemento : vettoreAree) {
@@ -56,7 +54,15 @@ int main()
   }
 
 
+  // vedo se gira la bisezione per qualche triangolo a caso
+  for (i=0; 1<10; i++)
+  {
+    if (Bisezione(mesh,i))
+        cout<<"ce l'ho fatta"<<endl;
+  }
+
+// =======
+  }
 
 
-};
 
