@@ -54,7 +54,9 @@ int main()
 
 
   // vedo se gira la bisezione per qualche triangolo a caso
-  Bisezione(mesh,74);
+
+  for(unsigned int i=0; i<10; i++)
+  {  Bisezione(mesh,vettoreAree[i].idTr); };
 
 
   cout << "Mappa Adiacenze: " << endl;

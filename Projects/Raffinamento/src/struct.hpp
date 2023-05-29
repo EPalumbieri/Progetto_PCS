@@ -21,15 +21,16 @@ namespace ProjectLibrary
         unsigned int NumberCell1D = 0; ///< number of Cell1D
         std::vector<unsigned int> Cell1DId = {}; ///< Cell1D id, size 1 x NumberCell1D
         std::vector<Vector2i> Cell1DVertices = {}; ///< Cell1D vertices indices, size 2 x NumberCell1D (fromId,toId)
-        std::vector<bool> DeleteCell1D  ={}; //0 eliminato 1 considero
+        std::vector<bool> DeleteCell1D  ={}; // true esiste, false eliminato
 
 
         unsigned int NumberCell2D = 0; ///< number of Cell2D
-        std::vector<bool> DeleteCell2d  ={}; //0 eliminato 1 considero
+
         std::vector<unsigned int> Cell2DId = {}; ///< Cell2D id, size 1 x NumberCell2D
         std::vector<array<unsigned int, 3>> Cell2DVertices = {}; ///< Cell2D Vertices indices, size 1 x NumberCell2DVertices[NumberCell2D]
         std::vector<array<unsigned int, 3>> Cell2DEdges = {}; ///< Cell2D Cell1D indices, size 1 x NumberCell2DEdges[NumberCell2D]
-        std::map<unsigned int, list<unsigned int>> Adjacency = {}; // id del lato collegato a id dei due triangoli ad esso adiacenti
+        std::map<unsigned int, list<unsigned int>> Adjacency = {}; // true esiste, false eliminato
+        std::vector<bool> DeleteCell2D  ={}; //True esiste False eliminato
    };
 
    //--------------------------------------------------------*
@@ -43,7 +44,7 @@ namespace ProjectLibrary
 
    struct ArrIdArea
    {
-    int idTr;
+    unsigned int idTr;
     double areaTr;
 
    };

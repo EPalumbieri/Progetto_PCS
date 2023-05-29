@@ -92,6 +92,7 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 
   mesh.Cell1DId.reserve(mesh.NumberCell1D);
   mesh.Cell1DVertices.reserve(mesh.NumberCell1D);
+  mesh.DeleteCell1D.reserve(mesh.NumberCell1D);
 
   for (const string& line : listLines)
   {
@@ -105,7 +106,7 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 
     mesh.Cell1DId.push_back(id);
     mesh.Cell1DVertices.push_back(vertices);
-
+    mesh.DeleteCell1D.push_back(true);
   }
 
   file.close();
@@ -147,6 +148,7 @@ bool ImportCell2Ds(TriangularMesh& mesh)
   mesh.Cell2DId.reserve(mesh.NumberCell2D);
   mesh.Cell2DVertices.reserve(mesh.NumberCell2D);
   mesh.Cell2DEdges.reserve(mesh.NumberCell2D);
+  mesh.DeleteCell2D.reserve(mesh.NumberCell2D);
 
 
   for (const string& line : listLines)
@@ -172,7 +174,7 @@ bool ImportCell2Ds(TriangularMesh& mesh)
     mesh.Cell2DId.push_back(id);
     mesh.Cell2DVertices.push_back(vertices);
     mesh.Cell2DEdges.push_back(edges);
-
+    mesh.DeleteCell1D.push_back(true);
   }
   file.close();
   return true;
@@ -277,9 +279,11 @@ unsigned int PuntoMedio(TriangularMesh& mesh,unsigned int idL)
 // funzione di bisezione del lato lungo
 bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 {
+
    unsigned int IdLE = LatoLungo(mesh, IdT);
    unsigned int IdVPM = PuntoMedio(mesh, IdLE);
    unsigned int IdVO = VerticeOpposto(mesh, IdT, IdLE);
+   mesh.DeleteCell1D[IdLE]=false;
 
     Vector2i LatoMO;
     LatoMO(0) = IdVPM;
@@ -288,6 +292,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 
     mesh.Cell1DId.push_back(idLatoMO);
     mesh.Cell1DVertices.push_back(LatoMO);
+    mesh.DeleteCell1D.push_back(true);
     mesh.NumberCell1D++;
 
     // creo i lati piccoli
@@ -303,6 +308,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 
     mesh.Cell1DId.push_back(idLato1M);
     mesh.Cell1DVertices.push_back(Lato1Mvertici);
+    mesh.DeleteCell1D.push_back(true);
     mesh.NumberCell1D++;
 
     unsigned int IdV2 = IdVertici(1);
@@ -313,6 +319,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 
     mesh.Cell1DId.push_back(idLato2M);
     mesh.Cell1DVertices.push_back(Lato2Mvertici);
+    mesh.DeleteCell1D.push_back(true);
     mesh.NumberCell1D++;
 
 
@@ -352,6 +359,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
     mesh.Cell2DId.push_back(IdT1); //creo un IdT1
     mesh.Cell2DVertices.push_back(vertici1);
     mesh.Cell2DEdges.push_back(lati1);
+    mesh.DeleteCell2D.push_back(true);
     cout<<"IdT1: "<< IdT1<<endl;
 
 
@@ -384,6 +392,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
     mesh.Cell2DId.push_back(IdT2); //creo un IdT2
     mesh.Cell2DVertices.push_back(vertici2);
     mesh.Cell2DEdges.push_back(lati2);
+    mesh.DeleteCell2D.push_back(true);
 
     //adiacenze
     //aggiorno per lato opposto Lato2Opp
@@ -430,6 +439,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
                  idLatoMO =mesh.NumberCell1D;
                  mesh.Cell1DId.push_back(idLatoMO);
                  mesh.Cell1DVertices.push_back(LatoMO);
+                 mesh.DeleteCell1D.push_back(true);
                  mesh.NumberCell1D++;
 
                  // ci interessano i lati opposti  per creare i  triangoli IdTr1A e IdTr1A
@@ -463,6 +473,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
                  mesh.Cell2DId.push_back(IdTr1A); //creo un IdTr1A
                  mesh.Cell2DVertices.push_back(vertici1);
                  mesh.Cell2DEdges.push_back(lati1);
+                 mesh.DeleteCell2D.push_back(true);
                  mesh.NumberCell2D++;
 
                  //ADIACENZA
@@ -491,6 +502,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
                  mesh.Cell2DId.push_back(IdTr2A); //creo un IdT2
                  mesh.Cell2DVertices.push_back(vertici2);
                  mesh.Cell2DEdges.push_back(lati2);
+                 mesh.DeleteCell2D.push_back(true);
 
                  //adiacenze
                  //lato piccolo
@@ -511,6 +523,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
                  //ADIACENZA LATO MEDIO
                  mesh.Adjacency.insert({idLatoMO,{IdTr1A,IdTr2A}});
                  mesh.NumberCell2D++;
+                 mesh.DeleteCell2D[IdTrAd]=false;
              };
 
 
@@ -522,8 +535,8 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
     mesh.Adjacency.erase(IdLE);
 
     return 0; // zero xk elimini il triangolo bisezionato
-
-}
+    mesh.DeleteCell2D[IdT]=false;
+};
 
 };
 
