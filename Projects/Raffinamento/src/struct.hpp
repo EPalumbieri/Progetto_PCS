@@ -23,6 +23,7 @@ namespace ProjectLibrary
         std::vector<Vector2i> Cell1DVertices = {}; ///< Cell1D vertices indices, size 2 x NumberCell1D (fromId,toId)
         std::vector<bool> DeleteCell1D  ={}; //0 eliminato 1 considero
 
+
         unsigned int NumberCell2D = 0; ///< number of Cell2D
         std::vector<bool> DeleteCell2d  ={}; //0 eliminato 1 considero
         std::vector<unsigned int> Cell2DId = {}; ///< Cell2D id, size 1 x NumberCell2D

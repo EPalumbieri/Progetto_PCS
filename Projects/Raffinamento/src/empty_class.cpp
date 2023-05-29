@@ -61,7 +61,7 @@ bool ImportCell0Ds(TriangularMesh& mesh)
   file.close();
   return true;
 }
-//// ***************************************************************************
+// ***************************************************************************
 bool ImportCell1Ds(TriangularMesh& mesh)
 {
     // Apro il file
@@ -352,6 +352,8 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
     mesh.Cell2DId.push_back(IdT1); //creo un IdT1
     mesh.Cell2DVertices.push_back(vertici1);
     mesh.Cell2DEdges.push_back(lati1);
+    cout<<"IdT1: "<< IdT1<<endl;
+
 
     //adiacenze
     //aggiorno per lato opposto Lato1Opp
@@ -377,6 +379,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
     array<unsigned int, 3> vertici2 = {IdV2, IdVO, IdVPM};
     array<unsigned int, 3> lati2 = {Lato2Opp,idLatoMO, idLato2M};
     unsigned int IdT2 = mesh.NumberCell2D;
+    cout<<"IdT1: "<< IdT1<<endl;
 
     mesh.Cell2DId.push_back(IdT2); //creo un IdT2
     mesh.Cell2DVertices.push_back(vertici2);
@@ -398,7 +401,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 
     // AGGIUNGO IL NUOVO LATO CON LE ADIACENZE idLato2M
     mesh.Adjacency.insert({idLato2M,{IdT2}});
-
+    mesh.NumberCell2D++;
 //-------------------------------------------*
 
     //Aggiorno adiacenze per latoMO che ha sia il IdT2, IdT1
@@ -477,12 +480,9 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
                         lista1.remove(IdTrAd); // Rimuovi vecchioId
                         lista1.push_back(IdTr1A); // Inserisci il nuovo IdT
                  };
-
-                 mesh.NumberCell2D++;
-
                  //_____________________________________________________________________________
 
-                 //CREO NUOVO TRIANGOLO IdT2
+                 //CREO NUOVO TRIANGOLO IdTrA2
                  vertici2 = {IdV2, IdVO, IdVPM};
                  lati2 = {Lato2Opp,idLatoMO, idLato2M};
 
