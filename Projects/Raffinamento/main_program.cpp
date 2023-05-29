@@ -1,5 +1,4 @@
 #include "struct.hpp"
-#include "functions.hpp"
 // #include "refiningfunc.hpp"
 #include "Eigen/Eigen"
 #include <fstream>
@@ -55,14 +54,22 @@ int main()
 
 
   // vedo se gira la bisezione per qualche triangolo a caso
-  for (unsigned int i=0; 1<10; i++)
+  Bisezione(mesh,74);
+
+
+  cout << "Mappa Adiacenze: " << endl;
+  for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
   {
-    if (Bisezione(mesh,i))
-        cout<<"ce l'ho fatta"<<endl;
+  cout << "key:\t" << it -> first << "\t values:";
+  for(const unsigned int id : it -> second)
+      cout << "\t" << id;
+
+  cout << endl;
   }
 
+
 // =======
-  }
+};
 
 
 

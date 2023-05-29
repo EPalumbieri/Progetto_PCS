@@ -4,10 +4,9 @@
 #include <iostream>
 #include "Eigen/Eigen"
 #include <fstream>
-#include "map"
-
 using namespace std;
 using namespace Eigen;
+
 
 // qui definisco le classi e gli oggetti
 namespace ProjectLibrary
@@ -81,32 +80,32 @@ namespace ProjectLibrary
    ///\param mesh: a TriangularMesh struct
    ///\param idL: è l'id del lato
    ///\return lunghezza lato
-   double LunghezzaLato(TriangularMesh& mesh,unsigned int& idL);
+   double LunghezzaLato(TriangularMesh& mesh,unsigned int idL);
 
    ///\brief dato l'id del triangolo ci restituisce il lato lungo
    ///\param mesh: a TriangularMesh struct
    ///\param idT: è l'id del triangolo
    ///\return id lato maggiore dei 3
-   unsigned int LatoLungo(TriangularMesh& mesh,unsigned int& idT);
+   unsigned int LatoLungo(TriangularMesh& mesh,unsigned int idT);
 
    ///\brief dato l'id del triangolo, l'id del lato lungo ci restituisce il vertice opposto
    ///\param mesh: a TriangularMesh struct
    ///\param idL: è l'id del lato
    ///\param idT: è l'id del triangolo
    ///\return id vertice opposto
-   unsigned int VerticeOpposto(TriangularMesh& mesh,unsigned int& idL,unsigned int& idT);
+   unsigned int VerticeOpposto(TriangularMesh& mesh,unsigned int idL,unsigned int idT);
 
    ///\brief calcola punto medio e aggiorna
    ///\param mesh: a TriangularMesh struct
    ///\param idL: è l'id del lato
    ///\return id vertice punto medio
-   unsigned int PuntoMedio(TriangularMesh& mesh,unsigned int& idL);
+   unsigned int PuntoMedio(TriangularMesh& mesh,unsigned int idL);
 
    ///\brief dato l'id del triangolo divede e aggiorna
    ///\param mesh: a TriangularMesh struct
    ///\param idT: è l'id del triangolo
    ///\return taglia
-   bool Bisezione(TriangularMesh& mesh,unsigned int& IdT);
+   bool Bisezione(TriangularMesh& mesh,unsigned int IdT);
 }
 
 #endif // __EMPTY_H

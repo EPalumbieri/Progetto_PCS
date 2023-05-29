@@ -1,13 +1,12 @@
 #include "struct.hpp"
-#include "functions.hpp"
 #include <iostream>
 #include "Eigen/Eigen"
 #include <fstream>
 //#include "map"
-#include "vector"
 
 using namespace std;
 using namespace Eigen;
+
 namespace ProjectLibrary
 {
 //_________________________________________________________
@@ -17,8 +16,8 @@ bool ImportCell0Ds(TriangularMesh& mesh)
     // Apro il file
     ifstream file;
 
-    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
-
+    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    //C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv
     if (file.fail())
     {
     cerr<<"file open failed 0"<< endl;
@@ -68,7 +67,7 @@ bool ImportCell1Ds(TriangularMesh& mesh)
     // Apro il file
     ifstream file;
 
-    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
     {
@@ -121,7 +120,8 @@ bool ImportCell2Ds(TriangularMesh& mesh)
   // Apro il file
   ifstream file;
 
-  file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+
 
   if (file.fail())
   {
@@ -197,7 +197,7 @@ double Area(TriangularMesh& mesh,unsigned int& idT)
 
 //____________________________________________________
 
-double LunghezzaLato(TriangularMesh& mesh,unsigned int& idL)
+double LunghezzaLato(TriangularMesh& mesh,unsigned int idL)
  {
     Vector2i vertici = mesh.Cell1DVertices[idL]; // array<unsigned int, 2> vertici = mesh.Cell1DVertices[idL];
     Vector2d coord1 = mesh.Cell0DCoordinates[vertici[0]]; // array<double, 2> = mesh.Cell0DCoordinates[vertici[0]];
@@ -211,7 +211,7 @@ double LunghezzaLato(TriangularMesh& mesh,unsigned int& idL)
 
  //----------------------------------------------------------------------------*
 
- unsigned int LatoLungo(TriangularMesh& mesh,unsigned int& idT)
+ unsigned int LatoLungo(TriangularMesh& mesh,unsigned int idT)
   {
     array<unsigned int, 3> idLati = mesh.Cell2DEdges[idT];
     // Calcola la lunghezza di ogni lato e determina l'id del lato più lungo
@@ -275,22 +275,19 @@ unsigned int PuntoMedio(TriangularMesh& mesh,unsigned int idL)
 
 //* --------------------------------------------- *
 // funzione di bisezione del lato lungo
-bool Bisezione(TriangularMesh& mesh,unsigned int& IdT)
+bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 {
-    unsigned int IdLE = LatoLungo(mesh, IdT);
-    cout<<"idle"<<IdLE<<endl;
-    unsigned int IdVPM = PuntoMedio(mesh, IdLE);
-    cout<<"idpm"<<IdVPM<<endl;
-    unsigned int IdVO = VerticeOpposto(mesh, IdT, IdLE);
-    cout<<"idvopposto"<<IdVO<<endl;
+   unsigned int IdLE = LatoLungo(mesh, IdT);
+   unsigned int IdVPM = PuntoMedio(mesh, IdLE);
+   unsigned int IdVO = VerticeOpposto(mesh, IdT, IdLE);
+
     Vector2i LatoMO;
     LatoMO(0) = IdVPM;
     LatoMO(1) = IdVO;
-    unsigned int idLatoMO =mesh.NumberCell1D ;
+    unsigned int idLatoMO =mesh.NumberCell1D;
 
-
+    mesh.Cell1DId.push_back(idLatoMO);
     mesh.Cell1DVertices.push_back(LatoMO);
-    mesh.Cell1DId.push_back(mesh.NumberCell1D);
     mesh.NumberCell1D++;
 
     // creo i lati piccoli
@@ -304,9 +301,8 @@ bool Bisezione(TriangularMesh& mesh,unsigned int& IdT)
 
     // mi salvo ID per cell2d edge
 
-
+    mesh.Cell1DId.push_back(idLato1M);
     mesh.Cell1DVertices.push_back(Lato1Mvertici);
-    mesh.Cell1DId.push_back(mesh.NumberCell1D);
     mesh.NumberCell1D++;
 
     unsigned int IdV2 = IdVertici(1);
@@ -315,13 +311,13 @@ bool Bisezione(TriangularMesh& mesh,unsigned int& IdT)
     Lato2Mvertici(1) = IdVPM;
     unsigned int idLato2M =mesh.NumberCell1D;
 
-    mesh.Cell1DVertices.push_back(Lato1Mvertici);
-    mesh.Cell1DId.push_back(mesh.NumberCell1D);
+    mesh.Cell1DId.push_back(idLato2M);
+    mesh.Cell1DVertices.push_back(Lato2Mvertici);
     mesh.NumberCell1D++;
 
 
 
-    //cerco id di Lato1O e Lato2O
+    //cerco id di Lato1Opp e Lato2Opp
     // cerco i vertici del triangolo
     array<unsigned int, 3> lati = mesh.Cell2DEdges[IdT]; // so gli id dei lati
 
@@ -333,32 +329,197 @@ bool Bisezione(TriangularMesh& mesh,unsigned int& IdT)
         if (lati[i] != IdLE){ //cioè vado avanti
 
         Vector2i vertici = mesh.Cell1DVertices[lati[i]];
-        if ( vertici[0] == IdV1 || vertici[1] == IdV1)
+        if (static_cast<unsigned int> (vertici[0]) == IdV1 || static_cast<unsigned int> (vertici[1]) == IdV1)
         {
-            Lato1Opp = lati[i];
+            Lato1Opp = lati[i]; //legato a 1m
         }
-        if (vertici(0) == IdV2 || vertici(1) == IdV2)
+        if ( static_cast<unsigned int> (vertici[0]) == IdV2 || static_cast<unsigned int> (vertici[1]) == IdV2)
         {
-            Lato2Opp = lati[i];
+            Lato2Opp = lati[i];//legato a 2m
         }
         };
     }
 
-
-    //ADESSO CREO I TRIANGOLI
+//_____________________________________________________________________________
+    //ADESSO CREO IL TRIANGOLO IdT1
     array<unsigned int, 3> vertici1 = {IdV1, IdVO, IdVPM};
     array<unsigned int, 3> lati1 = {Lato1Opp, idLatoMO, idLato1M};
 
-    mesh.Cell2DId.push_back(mesh.NumberCell2D); //creo un IdT1
+
+    //salvo il triagolo
+
+    unsigned int IdT1 = mesh.NumberCell2D;
+    mesh.Cell2DId.push_back(IdT1); //creo un IdT1
     mesh.Cell2DVertices.push_back(vertici1);
     mesh.Cell2DEdges.push_back(lati1);
 
+    //adiacenze
+    //aggiorno per lato opposto Lato1Opp
 
+    auto it1 = mesh.Adjacency.find(Lato1Opp);
+    if (it1 != mesh.Adjacency.end())
+    {
+        list<unsigned int>& lista1 = it1->second;
+
+        // Sostituisci l'elemento nella lista
+
+        lista1.remove(IdT); // Rimuovi vecchioId
+        lista1.push_back(IdT1); // Inserisci il nuovo IdT2
+    };
+
+    // AGGIUNGO IL NUOVO LATO CON LE ADIACENZE idLato1M
+    mesh.Adjacency.insert({idLato1M,{IdT1}});
+
+    mesh.NumberCell2D++;
+ //_____________________________________________________________________________
+
+    //CREO NUOVO TRIANGOLO IdT2
     array<unsigned int, 3> vertici2 = {IdV2, IdVO, IdVPM};
     array<unsigned int, 3> lati2 = {Lato2Opp,idLatoMO, idLato2M};
-    mesh.Cell2DId.push_back(mesh.NumberCell2D); //creo un IdT2
+    unsigned int IdT2 = mesh.NumberCell2D;
+
+    mesh.Cell2DId.push_back(IdT2); //creo un IdT2
     mesh.Cell2DVertices.push_back(vertici2);
     mesh.Cell2DEdges.push_back(lati2);
+
+    //adiacenze
+    //aggiorno per lato opposto Lato2Opp
+
+    auto it2 = mesh.Adjacency.find(Lato2Opp);
+    if (it2 != mesh.Adjacency.end())
+    {
+        list<unsigned int>& lista1 = it2->second;
+
+        // Sostituisci l'elemento nella lista
+
+        lista1.remove(IdT); // Rimuovi vecchioId
+        lista1.push_back(IdT2); // Inserisci il nuovo IdT2
+    };
+
+    // AGGIUNGO IL NUOVO LATO CON LE ADIACENZE idLato2M
+    mesh.Adjacency.insert({idLato2M,{IdT2}});
+
+//-------------------------------------------*
+
+    //Aggiorno adiacenze per latoMO che ha sia il IdT2, IdT1
+    mesh.Adjacency.insert({idLatoMO,{IdT1,IdT2}}); //aggiungo l'id del lato e lo associo all'id del triangolo
+
+//==============================================================================================================
+    //CASO IN CUI A TRIANGOLO ADIACENTE//
+
+    auto itAD = mesh.Adjacency.find(IdLE);
+
+    if (itAD!= mesh.Adjacency.end())
+    {
+        // La chiave idLE esiste nella mappa
+        const list<unsigned int>& listaIdTrAd = itAD -> second;
+
+        //iteriamo sugli elementi della lista che ha come chiave il lato lungo e prendiamo quello con id diverso da quello sopra per ricreare i 2 triangoli sotto
+
+       for (const unsigned int& IdTrAd : listaIdTrAd)
+          {
+             if (IdTrAd != IdT)
+             {
+                //devo creare solo il lato tra il punto medio e il nuovo vertice opposto
+                 IdVO = VerticeOpposto(mesh, IdTrAd, IdLE);
+                 LatoMO(0) = IdVPM;
+                 LatoMO(1) = IdVO;
+                 idLatoMO =mesh.NumberCell1D;
+                 mesh.Cell1DId.push_back(idLatoMO);
+                 mesh.Cell1DVertices.push_back(LatoMO);
+                 mesh.NumberCell1D++;
+
+                 // ci interessano i lati opposti  per creare i  triangoli IdTr1A e IdTr1A
+                 lati = mesh.Cell2DEdges[IdTrAd];
+
+                 for (unsigned int i = 0; i < 3; i++)
+                 {   // se il lato preso contiene v1 e non è le, lo prendo, altrimenti prendo l'altro
+                    if (lati[i] != IdLE)
+                        {
+                            //cioè vado avanti
+                             Vector2i vertici = mesh.Cell1DVertices[lati[i]];
+                            if (static_cast<unsigned int> (vertici[0]) == IdV1 || static_cast<unsigned int> (vertici[1]) == IdV1)
+                            {
+                                Lato1Opp = lati[i];// legato a 1m
+                            }
+                            if ( static_cast<unsigned int> (vertici[0]) == IdV2 || static_cast<unsigned int> (vertici[1]) == IdV2)
+                            {
+                                Lato2Opp = lati[i];// legato a 2M
+                            }
+                        };
+                 };
+
+                 //ADESSO CREO IL TRIANGOLO IdTr1A
+                 vertici1 = {IdV1, IdVO, IdVPM};
+                 lati1 = {Lato1Opp, idLatoMO, idLato1M};
+
+
+                 //salvo il triangolo
+
+                 unsigned int IdTr1A = mesh.NumberCell2D;
+                 mesh.Cell2DId.push_back(IdTr1A); //creo un IdTr1A
+                 mesh.Cell2DVertices.push_back(vertici1);
+                 mesh.Cell2DEdges.push_back(lati1);
+                 mesh.NumberCell2D++;
+
+                 //ADIACENZA
+                 //LATO PICCOLO
+                 mesh.Adjacency[idLato1M].push_back(IdTr1A);
+
+                 //SOSTIUIAMO VECCHIO ID CON ID Tr1A
+                 auto it1A = mesh.Adjacency.find(Lato1Opp);
+                 if (it1A != mesh.Adjacency.end())
+                 {
+                        list<unsigned int>& lista1 = it1A->second;
+
+                        // Sostituisci l'elemento nella lista
+
+                        lista1.remove(IdTrAd); // Rimuovi vecchioId
+                        lista1.push_back(IdTr1A); // Inserisci il nuovo IdT
+                 };
+
+                 mesh.NumberCell2D++;
+
+                 //_____________________________________________________________________________
+
+                 //CREO NUOVO TRIANGOLO IdT2
+                 vertici2 = {IdV2, IdVO, IdVPM};
+                 lati2 = {Lato2Opp,idLatoMO, idLato2M};
+
+                 unsigned int IdTr2A = mesh.NumberCell2D;
+
+                 mesh.Cell2DId.push_back(IdTr2A); //creo un IdT2
+                 mesh.Cell2DVertices.push_back(vertici2);
+                 mesh.Cell2DEdges.push_back(lati2);
+
+                 //adiacenze
+                 //lato piccolo
+                 mesh.Adjacency[idLato2M].push_back(IdTr2A);
+
+                //SOSTIUIAMO VECCHIO ID CON ID Tr1A
+                 auto it2A = mesh.Adjacency.find(Lato2Opp);
+                 if (it2A != mesh.Adjacency.end())
+                 {
+                        list<unsigned int>& lista1 = it2A->second;
+
+                        // Sostituisci l'elemento nella lista
+
+                        lista1.remove(IdTrAd); // Rimuovi vecchioId
+                        lista1.push_back(IdTr2A); // Inserisci il nuovo IdT2
+                  };
+                 //------
+                 //ADIACENZA LATO MEDIO
+                 mesh.Adjacency.insert({idLatoMO,{IdTr1A,IdTr2A}});
+                 mesh.NumberCell2D++;
+             };
+
+
+           };
+    };
+
+//=========================================================================
+//    //elimino chiave e adiacenze lato lungo
+    mesh.Adjacency.erase(IdLE);
 
     return 0; // zero xk elimini il triangolo bisezionato
 
