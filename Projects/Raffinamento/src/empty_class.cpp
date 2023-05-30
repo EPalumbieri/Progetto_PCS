@@ -1,8 +1,4 @@
 #include "struct.hpp"
-<<<<<<< Updated upstream
-=======
-#include "functions.hpp"
->>>>>>> Stashed changes
 #include <iostream>
 #include "Eigen/Eigen"
 #include <fstream>
@@ -15,17 +11,11 @@ namespace ProjectLibrary
 {
 //_________________________________________________________
 
-bool ImportCell0Ds(TriangularMesh& mesh)
+bool TriangularMesh::ImportCell0Ds()
 {
     // Apro il file
     ifstream file;
-<<<<<<< Updated upstream
-=======
-     file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
->>>>>>> Stashed changes
-
-    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
-    //C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv
+    file.open("./Cell0Ds.csv");
     if (file.fail())
     {
     cerr<<"file open failed 0"<< endl;
@@ -74,11 +64,7 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
-    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
     {
@@ -131,14 +117,7 @@ bool ImportCell2Ds(TriangularMesh& mesh)
 { 
   // Apro il file
   ifstream file;
-<<<<<<< Updated upstream
-
-  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
-
-=======
-  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
->>>>>>> Stashed changes
-
+  file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
   if (file.fail())
   {
   cerr<<"file open failed 2"<< endl;
@@ -273,7 +252,7 @@ double LunghezzaLato(TriangularMesh& mesh,unsigned int idL)
   }
 
  // creo funzione punto medio
-unsigned int PuntoMedio(TriangularMesh& mesh,unsigned int idL)
+unsigned int PuntoMedio(TriangularMesh& mesh,unsigned int& idL)
 {
     Vector2i vertici = mesh.Cell1DVertices[idL]; // array<unsigned int, 2> vertici = mesh.Cell1DVertices[idL];
     Vector2d punto1 = mesh.Cell0DCoordinates[vertici[0]]; // array<double, 2> = mesh.Cell0DCoordinates[vertici[0]];
@@ -296,7 +275,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 {
 
    unsigned int IdLE = LatoLungo(mesh, IdT);
-   unsigned int IdVPM = PuntoMedio(mesh, IdLE);
+   PuntoMedio(mesh, IdLE);
    unsigned int IdVO = VerticeOpposto(mesh, IdT, IdLE);
    mesh.DeleteCell1D[IdLE]=false;
 
@@ -339,7 +318,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 
 
 
-    //cerco id di Lato1Opp e Lato2Opp
+    // cerco id di Lato1Opp e Lato2Opp
     // cerco i vertici del triangolo
     array<unsigned int, 3> lati = mesh.Cell2DEdges[IdT]; // so gli id dei lati
 
@@ -359,7 +338,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
         {
             Lato2Opp = lati[i];//legato a 2m
         }
-        };
+        }
     }
 
 //_____________________________________________________________________________
@@ -369,7 +348,6 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
 
 
     //salvo il triagolo
-
     unsigned int IdT1 = mesh.NumberCell2D;
     mesh.Cell2DId.push_back(IdT1); //creo un IdT1
     mesh.Cell2DVertices.push_back(vertici1);
@@ -432,7 +410,7 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
     mesh.Adjacency.insert({idLatoMO,{IdT1,IdT2}}); //aggiungo l'id del lato e lo associo all'id del triangolo
 
 //==============================================================================================================
-    //CASO IN CUI A TRIANGOLO ADIACENTE//
+    //CASO IN CUI HA TRIANGOLO ADIACENTE//
 
     auto itAD = mesh.Adjacency.find(IdLE);
 
@@ -550,9 +528,11 @@ bool Bisezione(TriangularMesh& mesh,unsigned int IdT)
     mesh.Adjacency.erase(IdLE);
 
     return 0; // zero xk elimini il triangolo bisezionato
-    mesh.DeleteCell2D[IdT]=false;
-};
 
-};
+    mesh.DeleteCell2D[IdT]=false;
+}
+
+
+} // chiudo project library
 
 

@@ -1,9 +1,4 @@
 #include "struct.hpp"
-<<<<<<< Updated upstream
-// #include "refiningfunc.hpp"
-=======
-#include "functions.hpp"
->>>>>>> Stashed changes
 #include "Eigen/Eigen"
 #include <fstream>
 #include "map"
@@ -17,25 +12,24 @@ int main()
 {
   TriangularMesh mesh;
 
-    ImportCell0Ds(mesh);
-    ImportCell1Ds(mesh);
+  ImportCell0Ds(mesh);
+  ImportCell1Ds(mesh);
 
   if(!ImportCell2Ds(mesh))
-  {
+   {
     return 1;
-  }
+   }
   else
   {
-    cout << "Mappa Adiacenze: " << endl;
-    for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
+   cout << "Mappa Adiacenze: " << endl;
+   for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
     {
-      cout << "key:\t" << it -> first << "\t values:";
-      for(const unsigned int id : it -> second)
-        cout << "\t" << id;
-
-      cout << endl;
+     cout << "key:\t" << it -> first << "\t values:";
+     for(const unsigned int id : it -> second)
+       cout << "\t" << id;
+     cout << endl;
     }
-// <<<<<<< Updated upstream
+
   }
 
   vector<ArrIdArea> vettoreAree;
@@ -45,11 +39,11 @@ int main()
     pippo.idTr=mesh.Cell2DId[i] ;
     pippo.areaTr =Area(mesh,mesh.Cell2DId[i]);
     vettoreAree.push_back(pippo);
-  };
+  }
 
 
   // Ordinamento del vettore in base al membro "area"
- sort(vettoreAree.begin(), vettoreAree.end(),greater<ArrIdArea>()); //qui dobbiamo fare il npstro
+  sort(vettoreAree.begin(), vettoreAree.end(),greater<ArrIdArea>()); //qui dobbiamo fare il npstro
 
   cout << "Vettore dopo ordinamento:" << endl;
   for (const ArrIdArea& elemento : vettoreAree) {
@@ -57,32 +51,25 @@ int main()
   }
 
 
-<<<<<<< Updated upstream
-  // vedo se gira la bisezione per qualche triangolo a caso
+  // vedo se gira la bisezione per le prime 10 aree più grandi
 
-  for(unsigned int i=0; i<10; i++)
-  {  Bisezione(mesh,vettoreAree[i].idTr); };
-=======
+//  for(unsigned int i=0; i<2; i++)
+//  {  Bisezione(mesh,vettoreAree[i].idTr); };
+
+Bisezione(mesh,74);
  // ALGORITMO TRIANGOLO//
 
-
-
->>>>>>> Stashed changes
-
-
-  cout << "Mappa Adiacenze: " << endl;
+  cout <<endl<< "Mappa Adiacenze: " << endl;
   for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
   {
-  cout << "key:\t" << it -> first << "\t values:";
+  cout << "id lato:\t" << it -> first << "\t id triangol* adiacent*:";
   for(const unsigned int id : it -> second)
       cout << "\t" << id;
 
   cout << endl;
   }
 
-
-// =======
-};
+}
 
 
 
