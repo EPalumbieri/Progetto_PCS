@@ -11,11 +11,10 @@ using namespace ProjectLibrary;
 int main()
 {
   TriangularMesh mesh;
+  mesh.ImportCell0Ds();
+  mesh.ImportCell1Ds();
 
-  ImportCell0Ds(mesh);
-  ImportCell1Ds(mesh);
-
-  if(!ImportCell2Ds(mesh))
+  if(!mesh.ImportCell2Ds())
    {
     return 1;
    }
@@ -31,32 +30,20 @@ int main()
     }
 
   }
-
-  vector<ArrIdArea> vettoreAree;
-
-  for (unsigned int i=0; i< mesh.NumberCell2D; i++)
-  { ArrIdArea pippo;
-    pippo.idTr=mesh.Cell2DId[i] ;
-    pippo.areaTr =Area(mesh,mesh.Cell2DId[i]);
-    vettoreAree.push_back(pippo);
-  }
-
-
   // Ordinamento del vettore in base al membro "area"
-  sort(vettoreAree.begin(), vettoreAree.end(),greater<ArrIdArea>()); //qui dobbiamo fare il npstro
+    sort(mesh.Cell2D.begin(), mesh.Cell2D.end(), []( const Triangolo & lhs , const Triangolo & rhs) {return lhs.Area > rhs.Area;}); //qui dobbiamo fare il npstro
 
-  cout << "Vettore dopo ordinamento:" << endl;
-  for (const ArrIdArea& elemento : vettoreAree) {
-  cout << "ID: " << elemento.idTr << ", Area: " << elemento.areaTr << endl;
-  }
+ for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
+ {
+     cout << "id triangolo "<<mesh.Cell2D[i].idT <<"area "<< mesh.Cell2D[i].Area << endl;
+ }
 
+   // vedo se gira la bisezione per le prime 10 aree più grandi
 
-  // vedo se gira la bisezione per le prime 10 aree più grandi
-
-//  for(unsigned int i=0; i<2; i++)
+//  for(unsigned int i=0; i<10; i++)
 //  {  Bisezione(mesh,vettoreAree[i].idTr); };
 
-Bisezione(mesh,74);
+// mesh.Bisezione(74);
  // ALGORITMO TRIANGOLO//
 
   cout <<endl<< "Mappa Adiacenze: " << endl;
