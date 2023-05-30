@@ -1,5 +1,9 @@
 #include "struct.hpp"
+<<<<<<< Updated upstream
 // #include "refiningfunc.hpp"
+=======
+#include "functions.hpp"
+>>>>>>> Stashed changes
 #include "Eigen/Eigen"
 #include <fstream>
 #include "map"
@@ -53,10 +57,17 @@ int main()
   }
 
 
+<<<<<<< Updated upstream
   // vedo se gira la bisezione per qualche triangolo a caso
 
   for(unsigned int i=0; i<10; i++)
   {  Bisezione(mesh,vettoreAree[i].idTr); };
+=======
+ // ALGORITMO TRIANGOLO//
+
+
+
+>>>>>>> Stashed changes
 
 
   cout << "Mappa Adiacenze: " << endl;

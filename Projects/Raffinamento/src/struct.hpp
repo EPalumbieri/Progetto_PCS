@@ -97,6 +97,7 @@ namespace ProjectLibrary
    ///\return id vertice opposto
    unsigned int VerticeOpposto(TriangularMesh& mesh,unsigned int idL,unsigned int idT);
 
+<<<<<<< Updated upstream
    ///\brief calcola punto medio e aggiorna
    ///\param mesh: a TriangularMesh struct
    ///\param idL: è l'id del lato
@@ -110,4 +111,10 @@ namespace ProjectLibrary
    bool Bisezione(TriangularMesh& mesh,unsigned int IdT);
 }
 
+=======
+
+
+   }
+
+>>>>>>> Stashed changes
 #endif // __EMPTY_H

@@ -1,4 +1,8 @@
 #include "struct.hpp"
+<<<<<<< Updated upstream
+=======
+#include "functions.hpp"
+>>>>>>> Stashed changes
 #include <iostream>
 #include "Eigen/Eigen"
 #include <fstream>
@@ -15,6 +19,10 @@ bool ImportCell0Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
+<<<<<<< Updated upstream
+=======
+     file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+>>>>>>> Stashed changes
 
     file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
     //C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv
@@ -66,7 +74,10 @@ bool ImportCell1Ds(TriangularMesh& mesh)
 {
     // Apro il file
     ifstream file;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
@@ -120,9 +131,13 @@ bool ImportCell2Ds(TriangularMesh& mesh)
 { 
   // Apro il file
   ifstream file;
+<<<<<<< Updated upstream
 
   file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
 
+=======
+  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+>>>>>>> Stashed changes
 
   if (file.fail())
   {
