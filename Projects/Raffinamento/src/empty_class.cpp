@@ -3,7 +3,7 @@
 #include <iostream>
 #include "Eigen/Eigen"
 #include <fstream>
-//#include "map"
+#include <algorithm>
 
 using namespace std;
 using namespace Eigen;
@@ -18,11 +18,11 @@ namespace ProjectLibrary
 
  double TriangularMesh::LunghezzaLato(const Punto &P1, const Punto &P2)
  {
-    double lunghezza = (P1.coordinate(0)-P2.coordinate(0))*(P1.coordinate(0)-P2.coordinate(0))-(P1.coordinate(1)-P2.coordinate(1))*(P1.coordinate(1)-P2.coordinate(1));
+    double lunghezza = sqrt(abs((P1.coordinate(0)-P2.coordinate(0))*(P1.coordinate(0)-P2.coordinate(0))-(P1.coordinate(1)-P2.coordinate(1))*(P1.coordinate(1)-P2.coordinate(1))));
     return lunghezza;
  }
 
-// double TriangularMesh::LunghezzaLato1(const unsigned int& idL)
+// double TriangularMesh::LunghezzaLato(const unsigned int& idL)
 // {
 //    //array<unsigned int, 2> vertici = this->Cell1D[idL].idV; // array<unsigned int, 2> vertici = mesh.Cell1DVertices[idL];
 //    Vector2d coord1 = this->Cell0D[Cell1D[idL].idV[0]].coordinate; // array<double, 2> = mesh.Cell0DCoordinates[vertici[0]];
@@ -41,8 +41,8 @@ namespace ProjectLibrary
     unsigned int idLatoLungo = 0; // qui 0 non va bene perché corrisponde ad un id >>>> unsigned int idLatoLungo;
 
     for (unsigned int i = 0; i < 3; i++)    {
-//       unsigned int idLato = idLati[i];
-//       double lunghezza = LunghezzaLato(idLato);
+//       unsigned int idL = idLati[i];
+//       double lunghezza = LunghezzaLato(idL);
 
        unsigned int idL = idLati[i];
        double lunghezza = LunghezzaLato(this->Cell0D[Cell1D[idL].idV[0]],this->Cell0D[Cell1D[idL].idV[1]]);
@@ -181,9 +181,12 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
     auto it1 = this->Adjacency.find(Lato1O);
     if (it1 != this->Adjacency.end())
     {
-        // Sostituisci l'elemento nella lista
-        it1->second.erase(idT); // Rimuovi vecchioId
-        it1->second.push_back(idT1); // Inserisci il nuovo IdT2
+        auto& valueList = it1->second;
+        auto itElement = std::find(valueList.begin(), valueList.end(), idT);
+        if (itElement != valueList.end()) {
+            valueList.erase(itElement); // Rimuovi vecchioId
+            valueList.push_back(idT1); // Inserisci il nuovo IdT2
+         }
     };
 
     // AGGIUNGO IL NUOVO LATO CON LE ADIACENZE idLato1M
@@ -205,8 +208,12 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
     auto it2 = this->Adjacency.find(Lato2O);
     if (it2 != this->Adjacency.end())
     {
-        it2->second.erase(idT); // Rimuovi vecchioId
-        it2->second.push_back(IdT2); // Inserisci il nuovo IdT2
+        auto& valueList = it2->second;
+        auto itElement = std::find(valueList.begin(), valueList.end(), idT);
+        if (itElement != valueList.end()) {
+            valueList.erase(itElement); // Rimuovi vecchioId
+            valueList.push_back(IdT2); // Inserisci il nuovo IdT2
+         }
     };
 
     // AGGIUNGO IL NUOVO LATO CON LE ADIACENZE idLato2M
@@ -261,8 +268,12 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
              auto it1A = this->Adjacency.find(Lato1O);
              if (it1A != this->Adjacency.end())
              {
-                    it1A->second.erase(IdTA); // Rimuovi vecchioId
-                    it1A->second.push_back(IdTr1A); // Inserisci il nuovo IdT
+                 auto& valueList = it1A->second;
+                 auto itElement = std::find(valueList.begin(), valueList.end(), IdTA);
+                 if (itElement != valueList.end()) {
+                     valueList.erase(itElement); // Rimuovi vecchioId
+                     valueList.push_back(IdTr1A); // Inserisci il nuovo IdT2
+                  }
              };
              //_____________________________________________________________________________
 
@@ -284,9 +295,13 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
              auto it2A = this->Adjacency.find(Lato2O);
              if (it2A != this->Adjacency.end())
              {
-                    it2A->second.erase(IdTA); // Rimuovi vecchioId
-                    it2A->second.push_back(IdTr2A); // Inserisci il nuovo IdT2
-              };
+                auto& valueList = it2A->second;
+                auto itElement = std::find(valueList.begin(), valueList.end(), IdTA);
+                if (itElement != valueList.end()) {
+                    valueList.erase(itElement); // Rimuovi vecchioId
+                    valueList.push_back(IdTr2A); // Inserisci il nuovo IdT2
+                 }
+             };
              //------
              //ADIACENZA LATO MEDIO
              this->Adjacency.insert({idLatoMO,{IdTr1A,IdTr2A}});
