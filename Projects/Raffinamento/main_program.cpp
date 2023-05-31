@@ -1,8 +1,10 @@
 #include "struct.hpp"
+#include "sorting.hpp"
 #include "Eigen/Eigen"
 #include <fstream>
 #include "map"
 #include "vector"
+#include <utility>
 
 using namespace std;
 using namespace Eigen;
@@ -31,30 +33,45 @@ int main()
 
   }
 
-  // creo una lista di pair ordinata in base alle aree
-  // ogni volta che faccio la bisezione aggiungo i triangoli formati alla lista di pair
-  // faccio la bisezione per un parametro teta di volte
-
-
-
-  // Ordinamento del vettore in base al membro "area"
-    sort(mesh.Cell2D.begin(), mesh.Cell2D.end(), []( const Triangolo & lhs , const Triangolo & rhs) {return lhs.Area > rhs.Area;}); //qui dobbiamo fare il npstro
-
+  // creo un vettore di pair
+  vector<pair<unsigned int, double>> idArea;
   for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
   {
-      cout << "id triangolo "<<mesh.Cell2D[i].idT <<"area "<< mesh.Cell2D[i].Area << endl;
+      idArea.push_back(std::pair<unsigned int, double>(i,mesh.Cell2D[i].Area));
+      cout <<"idT:   "<< idArea[i].first << "Area: "<< idArea[i].second <<endl;
   }
 
+  // ordino il vettore in base alle aree
+  vector<pair<unsigned int, double>> areeOrdinate = SortLibrary::HeapSort(idArea);
+  for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
+  {
+    cout<<"triangoli ordinati:\t" << areeOrdinate[i].first<<"\t Area triangolo ordi: "<<areeOrdinate[i].second<<endl;
+  }
 
-   // vedo se gira la bisezione per le prime 10 aree più grandi
+  // applico la bisezione fino a una certa tolleranza (da sistemare in relativa)
+  int teta = 45;
+  //teta = teta % 100 * mesh.NumberCell2D;
+  double areaTol = areeOrdinate[teta].second; //tolleranza sull'area
+  cout << "Area tol:"<<areaTol<<endl;
+  areeOrdinate.erase(areeOrdinate.begin() + teta, areeOrdinate.end()); //elimino i pair da teta in poi
+  for (unsigned int i = 0; i < areeOrdinate.size(); i++)
+  {
+    // cout<<"triangoli ordinati restanti:\t" << areeOrdinate[i].first<<"\t Area triangolo ordi: "<<areeOrdinate[i].second<<endl;
+  }
+//  for ()
+//  {
+//      //areeOrdinate[0].erase
+//    mesh.Bisezione(areeOrdinate[0].first);
+//  }
 
-  //for(unsigned int i=0; i<50; i++)
-  //{  Bisezione(mesh.vettoreAree[i].idTr); };
 
-// mesh.Bisezione(74);
- // ALGORITMO TRIANGOLO//
 
-  cout <<endl<< "Mappa Adiacenze: " << endl;
+//  for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
+//  {
+//      cout << "id triangolo "<<mesh.Cell2D[i].idT <<"area "<< mesh.Cell2D[i].Area << endl;
+//  }
+
+  cout << "Mappa Adiacenze: " << endl;
   for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
   {
   cout << "id lato:\t" << it -> first << "\t id triangol* adiacent*:";
