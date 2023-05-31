@@ -13,7 +13,7 @@ namespace ProjectLibrary
 bool TriangularMesh::ImportCell0Ds()
 {
     ifstream file;
-    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
     if (file.fail())
     {
     cerr<<"file open failed 0"<< endl;
@@ -58,7 +58,7 @@ bool TriangularMesh::ImportCell0Ds()
 bool TriangularMesh::ImportCell1Ds()
 {
     ifstream file;
-    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+    file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
     {
@@ -105,7 +105,7 @@ bool TriangularMesh::ImportCell1Ds()
 bool TriangularMesh::ImportCell2Ds()
 { 
   ifstream file;
-  file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  file.open("C:/Users/elisa/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
   if (file.fail())
   {
   cerr<<"file open failed 2"<< endl;

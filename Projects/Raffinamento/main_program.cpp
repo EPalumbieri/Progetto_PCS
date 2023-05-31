@@ -43,33 +43,19 @@ int main()
 
   // ordino il vettore in base alle aree
   vector<pair<unsigned int, double>> areeOrdinate = SortLibrary::HeapSort(idArea);
-  for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
-  {
-    cout<<"triangoli ordinati:\t" << areeOrdinate[i].first<<"\t Area triangolo ordi: "<<areeOrdinate[i].second<<endl;
-  }
 
   // applico la bisezione fino a una certa tolleranza (da sistemare in relativa)
-  int teta = 45;
-  //teta = teta % 100 * mesh.NumberCell2D;
-  double areaTol = areeOrdinate[teta].second; //tolleranza sull'area
-  cout << "Area tol:"<<areaTol<<endl;
-  areeOrdinate.erase(areeOrdinate.begin() + teta, areeOrdinate.end()); //elimino i pair da teta in poi
-  for (unsigned int i = 0; i < areeOrdinate.size(); i++)
+  double teta = 0.6;
+  int num_triangoli=(int)(teta*mesh.NumberCell2D);
+  cout<<num_triangoli<<endl;
+  for (unsigned int i = 0; i < num_triangoli; i++)
   {
-    // cout<<"triangoli ordinati restanti:\t" << areeOrdinate[i].first<<"\t Area triangolo ordi: "<<areeOrdinate[i].second<<endl;
+
+    mesh.Bisezione(areeOrdinate[0].first);
+    areeOrdinate.erase(areeOrdinate.begin());
   }
-//  for ()
-//  {
-//      //areeOrdinate[0].erase
-//    mesh.Bisezione(areeOrdinate[0].first);
-//  }
 
-
-
-//  for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
-//  {
-//      cout << "id triangolo "<<mesh.Cell2D[i].idT <<"area "<< mesh.Cell2D[i].Area << endl;
-//  }
+//cout<<"triangoli ordinati restanti:\t" << areeOrdinate[i].first<<"\t Area triangolo ordi: "<<areeOrdinate[i].second<<endl;
 
   cout << "Mappa Adiacenze: " << endl;
   for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
