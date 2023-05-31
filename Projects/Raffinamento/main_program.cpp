@@ -30,18 +30,26 @@ int main()
     }
 
   }
+
+  // creo una lista di pair ordinata in base alle aree
+  // ogni volta che faccio la bisezione aggiungo i triangoli formati alla lista di pair
+  // faccio la bisezione per un parametro teta di volte
+
+
+
   // Ordinamento del vettore in base al membro "area"
     sort(mesh.Cell2D.begin(), mesh.Cell2D.end(), []( const Triangolo & lhs , const Triangolo & rhs) {return lhs.Area > rhs.Area;}); //qui dobbiamo fare il npstro
 
- for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
- {
-     cout << "id triangolo "<<mesh.Cell2D[i].idT <<"area "<< mesh.Cell2D[i].Area << endl;
- }
+  for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
+  {
+      cout << "id triangolo "<<mesh.Cell2D[i].idT <<"area "<< mesh.Cell2D[i].Area << endl;
+  }
+
 
    // vedo se gira la bisezione per le prime 10 aree più grandi
 
-//  for(unsigned int i=0; i<10; i++)
-//  {  Bisezione(mesh,vettoreAree[i].idTr); };
+  //for(unsigned int i=0; i<50; i++)
+  //{  Bisezione(mesh.vettoreAree[i].idTr); };
 
 // mesh.Bisezione(74);
  // ALGORITMO TRIANGOLO//

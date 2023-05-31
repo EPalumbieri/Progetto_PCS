@@ -44,20 +44,21 @@ namespace ProjectLibrary
 
         unsigned int NumberCell1D = 0; ///< number of Cell1D
         std::vector<Lato> Cell1D = {}; ///< Cell1D id, size 1 x NumberCell1D
-        std::vector<bool> DeleteCell1D  ={}; // true esiste, false eliminato
+        std::vector<bool> DeleteCell1D  ={}; //True se elimino false se mantengo
         bool ImportCell1Ds();
         double LunghezzaLato(const unsigned int& idL);
         unsigned int PuntoMedio(const unsigned int& idL);
 
         unsigned int NumberCell2D = 0; ///< number of Cell2D
         std::vector<Triangolo> Cell2D = {}; ///< Cell2D id, size 1 x NumberCell2D
-        std::map<unsigned int, list<unsigned int>> Adjacency = {}; // true esiste, false eliminato
-        std::vector<bool> DeleteCell2D  ={}; //True esiste False eliminato
+        std::map<unsigned int, list<unsigned int>> Adjacency = {};
+        std::vector<bool> DeleteCell2D  ={}; //True se elimino false se mantengo
         bool ImportCell2Ds();
         unsigned int LatoLungo(const unsigned int& idT);
         unsigned int VerticeOpposto(const unsigned int& idL,const unsigned int& idT);
         bool Bisezione(const unsigned int& IdT);
         static double Area(const Punto &P1, const Punto &P2, const Punto &P3);
+        unsigned int LatoAccanto(const unsigned int& idT,const unsigned int& idL, const unsigned int& idP);
     };
 
 }
