@@ -11,44 +11,31 @@ using namespace std;
 using namespace Eigen;
 namespace SortLibrary {
 
+//  inline ostream &operator<<(ostream &os, const DecreasingInt &obj)
+//  {
+//    os << obj.value;
+//    return os;
+//  }
 
-  struct DecreasingInt
-  {
-    int value;
-    DecreasingInt() = default;
-    DecreasingInt(const int& value): value(value){}
-
-  };
-
-  // bool comparePairs(const std::pair<int, int>& a, const std::pair<int, int>& b) {
-  // return a.first < b.first;
-  inline ostream &operator<<(ostream &os, const DecreasingInt &obj)
-  {
-    os << obj.value;
-    return os;
-  }
-
-  inline bool operator==(const std::pair<unsigned int, double>& obj1, const std::pair<unsigned int, double>& obj2)
+  inline bool operator==(const pair<unsigned int, double>& obj1, const pair<unsigned int, double>& obj2)
   {
     return obj1.second == obj2.second;
   }
 
-  inline bool operator!=(const std::pair<unsigned int, double>& obj1, const std::pair<unsigned int, double>& obj2)
+  inline bool operator!=(const pair<unsigned int, double>& obj1, const pair<unsigned int, double>& obj2)
   {
     return !(obj1.second == obj2.second);
   }
 
-  inline bool operator< (const std::pair<unsigned int, double>& obj1, const std::pair<unsigned int, double>& obj2)
+  inline bool operator< (const pair<unsigned int, double>& obj1, const pair<unsigned int, double>& obj2)
   {
     return obj1.second > obj2.second;
   }
 
-  inline bool operator>(const std::pair<unsigned int, double>& obj1, const std::pair<unsigned int, double>& obj2)
+  inline bool operator>(const pair<unsigned int, double>& obj1, const pair<unsigned int, double>& obj2)
   {
     return obj1.second < obj2.second;
   }
-
-
 
  template<typename T>
  void Heapify(vector<T>& sortedV, int n,int i)

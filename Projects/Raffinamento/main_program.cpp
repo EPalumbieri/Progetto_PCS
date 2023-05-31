@@ -38,33 +38,33 @@ int main()
   for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
   {
       idArea.push_back(std::pair<unsigned int, double>(i,mesh.Cell2D[i].Area));
-      cout <<"idT:   "<< idArea[i].first << "Area: "<< idArea[i].second <<endl;
+      cout <<"idT:   "<< idArea[i].first << " Area: "<< idArea[i].second <<endl;
   }
 
   // ordino il vettore in base alle aree
   vector<pair<unsigned int, double>> areeOrdinate = SortLibrary::HeapSort(idArea);
 
+  for (unsigned int i = 0; i < mesh.NumberCell2D; i++)
+  cout <<"idT ordinato:   "<< areeOrdinate[i].first << " Area: "<< areeOrdinate[i].second <<endl;
+
   // applico la bisezione fino a una certa tolleranza (da sistemare in relativa)
   double teta = 0.6;
-  int num_triangoli=(int)(teta*mesh.NumberCell2D);
+  unsigned int num_triangoli=(int)(teta*mesh.NumberCell2D);
   cout<<num_triangoli<<endl;
   for (unsigned int i = 0; i < num_triangoli; i++)
   {
-
     mesh.Bisezione(areeOrdinate[0].first);
     areeOrdinate.erase(areeOrdinate.begin());
   }
 
-//cout<<"triangoli ordinati restanti:\t" << areeOrdinate[i].first<<"\t Area triangolo ordi: "<<areeOrdinate[i].second<<endl;
-
   cout << "Mappa Adiacenze: " << endl;
   for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
   {
-  cout << "id lato:\t" << it -> first << "\t id triangol* adiacent*:";
-  for(const unsigned int id : it -> second)
+    cout << "id lato:\t" << it -> first << "\t id triangol* adiacent*:";
+    for(const unsigned int id : it -> second)
       cout << "\t" << id;
+    cout << endl;
 
-  cout << endl;
   }
 
 }
