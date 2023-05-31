@@ -51,10 +51,21 @@ int main()
   double teta = 0.6;
   unsigned int num_triangoli=(int)(teta*mesh.NumberCell2D);
   cout<<num_triangoli<<endl;
+<<<<<<< Updated upstream
   for (unsigned int i = 0; i < num_triangoli; i++)
   {
     mesh.Bisezione(areeOrdinate[0].first);
     areeOrdinate.erase(areeOrdinate.begin());
+=======
+
+  //for (unsigned int i = 1; i < static_cast<unsigned int>(num_triangoli); i++)
+  for (unsigned int i = 0; i <20; i++)
+  {
+      if(mesh.DeleteCell2D[areeOrdinate[0].first]==false)
+      { mesh.Bisezione(areeOrdinate[0].first);
+        areeOrdinate.erase(areeOrdinate.begin());}
+      areeOrdinate.erase(areeOrdinate.begin());
+>>>>>>> Stashed changes
   }
 
   cout << "Mappa Adiacenze: " << endl;

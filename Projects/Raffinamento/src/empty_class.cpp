@@ -10,6 +10,157 @@ using namespace Eigen;
 
 namespace ProjectLibrary
 {
+<<<<<<< Updated upstream
+=======
+bool TriangularMesh::ImportCell0Ds()
+{
+    ifstream file;
+    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    if (file.fail())
+    {
+    cerr<<"file open failed 0"<< endl;
+    return false;
+    }
+
+  list<string> listLines;
+  string line;
+  while (getline(file, line))
+    listLines.push_back(line);
+
+  listLines.pop_front();
+
+  this->NumberCell0D = listLines.size();
+
+  if (this->NumberCell0D == 0)
+  {
+    cerr << "There is no cell 0D" << endl;
+    return false;
+  }
+
+  this->Cell0D.reserve(this->NumberCell0D);
+  // mesh.Cell0DCoordinates.reserve(mesh.NumberCell0D);
+
+  for (const string& line : listLines)
+  {
+    istringstream converter(line);
+
+    unsigned int id;
+    unsigned int marker;
+    Vector2d coord;
+
+    converter >>  id >> marker >> coord(0) >> coord(1);
+
+    this->Cell0D.push_back(Punto(id,coord));
+
+  }
+  file.close();
+  return true;
+}
+// ***************************************************************************
+bool TriangularMesh::ImportCell1Ds()
+{
+    ifstream file;
+    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+
+    if (file.fail())
+    {
+    cerr<<"file open failed 1"<< endl;
+    return false;
+    }
+
+  list<string> listLines;
+  string line;
+  while (getline(file, line))
+    listLines.push_back(line);
+
+  listLines.pop_front();
+
+  this->NumberCell1D = listLines.size();
+
+  if (this->NumberCell1D == 0)
+  {
+    cerr << "There is no cell 1D" << endl;
+    return false;
+  }
+
+  this->Cell1D.reserve(this->NumberCell1D);
+  //mesh.Cell1DVertices.reserve(mesh.NumberCell1D);
+  this->DeleteCell1D.resize(this->NumberCell1D); //li inizializza a false
+
+  for (const string& line : listLines)
+  {
+    istringstream converter(line);
+
+    unsigned int id;
+    unsigned int marker;
+    array<unsigned int, 2> vertices;
+
+    converter >>  id >> marker >> vertices[0] >> vertices[1];
+
+    this->Cell1D.push_back(Lato(id,vertices));
+  }
+
+  file.close();
+  return true;
+}
+// ***************************************************************************
+bool TriangularMesh::ImportCell2Ds()
+{ 
+  ifstream file;
+  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  if (file.fail())
+  {
+  cerr<<"file open failed 2"<< endl;
+  return false;
+  }
+
+  list<string> listLines;
+  string line;
+  while (getline(file, line))
+    listLines.push_back(line);
+
+  listLines.pop_front();
+
+  this->NumberCell2D = listLines.size();
+
+  if (this->NumberCell2D == 0)
+  {
+    cerr << "There is no cell 2D" << endl;
+    return false;
+  }
+
+  this->Cell2D.reserve(this->NumberCell2D);
+  this->DeleteCell2D.resize(this->NumberCell2D);
+
+  for (const string& line : listLines)
+  {
+    istringstream converter(line);
+
+    // inizializzo i dati
+    unsigned int id;
+    array<unsigned int, 3> vertices;
+    array<unsigned int, 3> edges;
+
+    converter >>  id;
+    for(unsigned int i = 0; i < 3; i++)
+      converter >> vertices[i];
+    for(unsigned int i = 0; i < 3; i++)
+    {
+      converter >> edges[i];
+         if (this->Adjacency.find(edges[i]) == this->Adjacency.end()) //se non c'è nella mappa
+              this->Adjacency.insert({edges[i],{id}}); //aggiungo l'id del lato e lo associo all'id del triangolo
+          else
+              this->Adjacency[edges[i]].push_back(id); // aggiungo l'id del triangolo
+    }
+    double area=Area(this->Cell0D[vertices[0]],this->Cell0D[vertices[1]],this->Cell0D[vertices[2]]);
+    this->Cell2D.push_back(Triangolo(id, vertices, edges, area));
+//    mesh.DeleteCell1D.push_back(true);
+  }
+  file.close();
+  return true;
+}
+// ***************************************************************************
+>>>>>>> Stashed changes
  double TriangularMesh::Area(const Punto &P1, const Punto &P2, const Punto &P3)
 {
     return abs((P1.coordinate(0)*(P2.coordinate(1)-P3.coordinate(1))+P2.coordinate(0)*(P3.coordinate(1)-P1.coordinate(1))+P3.coordinate(0)*(P1.coordinate(1)-P2.coordinate(1)))/2);
@@ -96,7 +247,11 @@ unsigned int TriangularMesh::PuntoMedio(const unsigned int& idL)
 
     this->Cell0D.push_back(Punto(this->NumberCell0D, pm)); //
     //mesh.Cell0DId.push_back(mesh.NumberCell0D); //perché
+<<<<<<< Updated upstream
     this->NumberCell0D ++;
+=======
+    this->NumberCell0D++;
+>>>>>>> Stashed changes
 
     return this->NumberCell0D; //-1 perché parto da zero
 }
@@ -121,7 +276,12 @@ unsigned int TriangularMesh::LatoAccanto(const unsigned int& idT,const unsigned 
 }
 //----------------------------------------------------------------------------
 bool TriangularMesh::Bisezione(const unsigned int& idT)
+<<<<<<< Updated upstream
 {
+=======
+{ cout<< "bisezione per : "<< idT<< endl;
+
+>>>>>>> Stashed changes
    unsigned int idLL = LatoLungo(idT);
    unsigned int idVM = PuntoMedio(idLL);
    unsigned int idVO = VerticeOpposto(idT, idLL);
@@ -171,7 +331,11 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
    array<unsigned int, 3> lati1 = {Lato1O, idLatoMO, idLato1M};
 
    //salvo il triagolo
+<<<<<<< Updated upstream
    unsigned int idT1 = this->NumberCell2D;
+=======
+   unsigned int idT1 = this->NumberCell2D ;
+>>>>>>> Stashed changes
    double area1=Area(this->Cell0D[vertici1[0]],this->Cell0D[vertici1[1]],this->Cell0D[vertici1[2]]);
    this->Cell2D.push_back(Triangolo(idT1,vertici1,lati1,area1));
    this->DeleteCell2D.push_back(false);
@@ -181,12 +345,18 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
     auto it1 = this->Adjacency.find(Lato1O);
     if (it1 != this->Adjacency.end())
     {
+<<<<<<< Updated upstream
         auto& valueList = it1->second;
         auto itElement = std::find(valueList.begin(), valueList.end(), idT);
         if (itElement != valueList.end()) {
             valueList.erase(itElement); // Rimuovi vecchioId
             valueList.push_back(idT1); // Inserisci il nuovo IdT2
          }
+=======
+        // Sostituisci l'elemento nella lista
+        it1->second.remove(idT); // Rimuovi vecchioId
+        it1->second.push_back(idT1); // Inserisci il nuovo IdT1
+>>>>>>> Stashed changes
     };
 
     // AGGIUNGO IL NUOVO LATO CON LE ADIACENZE idLato1M
@@ -226,22 +396,36 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
 //==============================================================================================================
     //CASO IN CUI HA TRIANGOLO ADIACENTE//
 
+    bool esci = false;
     auto itA = this->Adjacency.find(idLL);
     if (itA!= this->Adjacency.end()) //controlla che l'elemento sia stato trovato correttamente
     {
+<<<<<<< Updated upstream
  //iteriamo sugli elementi della lista che ha come chiave il lato lungo e prendiamo quello con id diverso da quello sopra per ricreare i 2 triangoli sotto
     if (itA->second.size() > 1)
         {
         for (const unsigned int& IdTA : itA -> second)
        {
          if (IdTA != idT)
+=======
+        //iteriamo sugli elementi della lista che ha come chiave il lato lungo e prendiamo quello con id diverso da quello sopra per ricreare i 2 triangoli sotto
+       for (const unsigned int& IdTA : itA -> second)
+        {
+         if (IdTA != idT && esci==false)
+>>>>>>> Stashed changes
          {
+                cout<<"LATO LUNGO: " << idLL<< " triangolo adiacente: ";
+                cout<< IdTA<<endl;
             //devo creare solo il lato tra il punto medio e il nuovo vertice opposto
              //AAAAAAAAAAAAAAAAAAA
              idVO = VerticeOpposto(IdTA, idLL);
              LatoMO[0] = idVM;
              LatoMO[1] = idVO;
+<<<<<<< Updated upstream
              unsigned int idLatoMO =this->NumberCell1D;
+=======
+             idLatoMO =this->NumberCell1D;
+>>>>>>> Stashed changes
              this->Cell1D.push_back(Lato(idLatoMO, LatoMO));
              this->DeleteCell1D.push_back(false);
              this->NumberCell1D++;
@@ -306,6 +490,8 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
              //ADIACENZA LATO MEDIO
              this->Adjacency.insert({idLatoMO,{IdTr1A,IdTr2A}});
              this->DeleteCell2D[IdTA]=true; //ho cambiato da false a true
+
+             esci=true;
          };
        };
     };
@@ -315,10 +501,18 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
 //    //elimino chiave e adiacenze lato lungo
     this->Adjacency.erase(idLL);
 
+<<<<<<< Updated upstream
     this->DeleteCell2D[idT]=true;
 
     return 0; // zero xk elimini il triangolo bisezionato
 
+=======
+    // zero xk elimini il triangolo bisezionato
+
+    this->DeleteCell2D[idT]=true;
+    return 0;
+
+>>>>>>> Stashed changes
 }
 } // chiudo project library
 
