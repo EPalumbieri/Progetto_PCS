@@ -37,14 +37,18 @@ namespace ProjectLibrary
 
     struct TriangularMesh
     {
+        bool ExportMesh(string file0D, string file1D, string file2D);
+
         unsigned int NumberCell0D = 0; ///< number of Cell0D
         std::vector<Punto> Cell0D = {}; ///< Cell0D id, size 1 x NumberCell0D //oggetti di tipo punto
         bool ImportCell0Ds();
+        bool ExportCell0Ds(string nomeFile);
 
         unsigned int NumberCell1D = 0; ///< number of Cell1D
         std::vector<Lato> Cell1D = {}; ///< Cell1D id, size 1 x NumberCell1D //ELenco id Lati
         std::vector<bool> DeleteCell1D  ={}; //True se elimino false se mantengo
         bool ImportCell1Ds();
+        bool ExportCell1Ds(string nomeFile);
         //double LunghezzaLato(const unsigned int& idL);
         double LunghezzaLato(const Punto &P1, const Punto &P2);
         unsigned int PuntoMedio(const unsigned int& idL);
@@ -54,6 +58,7 @@ namespace ProjectLibrary
         std::map<unsigned int, list<unsigned int>> Adjacency = {};
         std::vector<bool> DeleteCell2D  ={}; //True se elimino false se mantengo
         bool ImportCell2Ds();
+        bool ExportCell2Ds(string nomeFile);
         unsigned int LatoLungo(const unsigned int& idT);
         unsigned int VerticeOpposto(const unsigned int& idL,const unsigned int& idT);
         bool Bisezione(const unsigned int& IdT);
