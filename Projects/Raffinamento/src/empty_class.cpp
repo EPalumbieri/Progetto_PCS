@@ -13,7 +13,7 @@ namespace ProjectLibrary
 bool TriangularMesh::ImportCell0Ds()
 {
     ifstream file;
-    file.open("C:/Users/filip/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
     if (file.fail())
     {
     cerr<<"file open failed 0"<< endl;
@@ -58,7 +58,7 @@ bool TriangularMesh::ImportCell0Ds()
 bool TriangularMesh::ImportCell1Ds()
 {
     ifstream file;
-    file.open("C:/Users/filip/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
+    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
 
     if (file.fail())
     {
@@ -105,7 +105,7 @@ bool TriangularMesh::ImportCell1Ds()
 bool TriangularMesh::ImportCell2Ds()
 { 
   ifstream file;
-  file.open("C:/Users/filip/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
   if (file.fail())
   {
   cerr<<"file open failed 2"<< endl;
@@ -171,30 +171,18 @@ bool TriangularMesh::ImportCell2Ds()
     return lunghezza;
  }
 
-// double TriangularMesh::LunghezzaLato(const unsigned int& idL)
-// {
-//    //array<unsigned int, 2> vertici = this->Cell1D[idL].idV; // array<unsigned int, 2> vertici = this->Cell1DVertices[idL];
-//    Vector2d coord1 = this->Cell0D[Cell1D[idL].idV[0]].coordinate; // array<double, 2> = this->Cell0DCoordinates[vertici[0]];
-//    Vector2d coord2 = this->Cell0D[Cell1D[idL].idV[1]].coordinate; // stesso di su
-
-//    // io lo calcolerei senza radice per il costo computazionale (tanto non fa differenza)
-//    double lunghezza = sqrt((coord2[0] - coord1[0]) * (coord2[0] - coord1[0]) + (coord2[1] - coord1[1]) * (coord2[1] - coord1[1]));
-//    return lunghezza;
-//  }
 //----------------------------------------------------------------------------
- unsigned int TriangularMesh::LatoLungo(const unsigned int& idT)
+ unsigned int TriangularMesh::LatoLungo(const unsigned int &idT)
   {
-    array<unsigned int, 3> idLati = this->Cell2D[idT].idL;
+    array<unsigned int, 3> idLati = Cell2D[idT].idL;
     // Calcola la lunghezza di ogni lato e determina l'id del lato più lungo
     double lunghezzaMax = 0.0;
     unsigned int idLatoLungo = 0; // qui 0 non va bene perché corrisponde ad un id >>>> unsigned int idLatoLungo;
 
-    for (unsigned int i = 0; i < 3; i++)    {
-//       unsigned int idL = idLati[i];
-//       double lunghezza = LunghezzaLato(idL);
-
+    for (unsigned int i = 0; i < 3; i++)
+    {
        unsigned int idL = idLati[i];
-       double lunghezza = LunghezzaLato(this->Cell0D[Cell1D[idL].idV[0]],this->Cell0D[Cell1D[idL].idV[1]]);
+       double lunghezza = LunghezzaLato(Cell0D[Cell1D[idL].idV[0]],Cell0D[Cell1D[idL].idV[1]]);
 
        //calcolo il lato massimo
        if (lunghezza > lunghezzaMax)    {
@@ -204,6 +192,7 @@ bool TriangularMesh::ImportCell2Ds()
     }
     return idLatoLungo;
   }
+
 //----------------------------------------------------------------------------
  unsigned int TriangularMesh::VerticeOpposto(const unsigned int& idT,const unsigned int& idL)
   {
@@ -232,25 +221,35 @@ bool TriangularMesh::ImportCell2Ds()
 //----------------------------------------------------------------------------
 unsigned int TriangularMesh::PuntoMedio(const unsigned int& idL)
 {
-    Vector2d punto1 = this->Cell0D[Cell1D[idL].idV[0]].coordinate;
-    Vector2d punto2 = this->Cell0D[Cell1D[idL].idV[1]].coordinate;
+    Vector2d punto1 = Cell0D[Cell1D[idL].idV[0]].coordinate;
+    Vector2d punto2 = Cell0D[Cell1D[idL].idV[1]].coordinate;
 
-//    array<unsigned int, 2> vertici = this->Cell1D[idL].idV; // array<unsigned int, 2> vertici = this->Cell1DVertices[idL];
-//    Vector2d punto1 = this->Cell0DCoordinates[vertici[0]]; // array<double, 2> = this->Cell0DCoordinates[vertici[0]];
-//    Vector2d punto2 = this->Cell0DCoordinates[vertici[1]];
+    Vector2d puntoMedio;
+    puntoMedio(0) = (punto1[0] + punto2[0])/2;
+    puntoMedio(1) = (punto1[1] + punto2[1])/2;
 
-    Vector2d pm;
-    pm(0) = (punto1[0] + punto2[0])/2;
-    pm(1) = (punto1[1] + punto2[1])/2;
+    Cell0D.push_back(Punto(NumberCell0D, puntoMedio));
+    NumberCell0D ++;
 
-    this->Cell0D.push_back(Punto(this->NumberCell0D, pm)); //
-    //this->Cell0DId.push_back(this->NumberCell0D); //perché
-
-    this->NumberCell0D ++;
-
-
-    return this->NumberCell0D-1; //-1 perché parto da zero
+    return NumberCell0D-1; //-1 perché parto da zero
 }
+
+//unsigned int TriangularMesh::PuntoMedio(Lato& L)
+//{
+//    Punto P1;
+//    Punto P2;
+
+//    P1.idP = L.idV(0);
+//    P2.idP = L.idV(1);
+
+//    Vector2d puntoMedio;
+//    puntoMedio(0) = (P1.coordinate(0) + P2.coordinate(0))/2;
+//    puntoMedio(1) = (P1.coordinate(1) + P2.coordinate(1))/2;
+
+//    Cell0D.push_back(Punto(NumberCell0D, puntoMedio));
+//    NumberCell0D ++;
+//    return NumberCell0D -1;
+//}
 //----------------------------------------------------------------------------
 unsigned int TriangularMesh::LatoAccanto(const unsigned int& idT,const unsigned int& idL, const unsigned int& idP)
 {
@@ -259,7 +258,7 @@ unsigned int TriangularMesh::LatoAccanto(const unsigned int& idT,const unsigned 
     for (unsigned int i = 0; i < 3; i++)
     {   // se il lato preso contiene v1 e non è le, lo prendo, altrimenti prendo l'altro
         if (lati[i] != idL)
-        { //cioè vado avanti
+        { //vado avanti
             array<unsigned int, 2> vertici = this->Cell1D[lati[i]].idV;
             if ( vertici[0] == idP || vertici[1] == idP)
             {
@@ -396,12 +395,11 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
                 cout<<"LATO LUNGO: " << idLL<< " triangolo adiacente: ";
                 cout<< IdTA<<endl;
             //devo creare solo il lato tra il punto medio e il nuovo vertice opposto
-             //AAAAAAAAAAAAAAAAAAA
              idVO = VerticeOpposto(IdTA, idLL);
              cout<<idVO<<endl;
              LatoMO[0] = idVM;
              LatoMO[1] = idVO;
-             unsigned int idLatoMO =this->NumberCell1D;
+             // unsigned int idLatoMO =this->NumberCell1D;
              idLatoMO =this->NumberCell1D;
              this->Cell1D.push_back(Lato(idLatoMO, LatoMO));
              this->DeleteCell1D.push_back(false);
@@ -484,7 +482,9 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
     return 0;
 
 }
+    return 0;
 }
+
 bool TriangularMesh::ExportMesh(string file0D, string file1D, string file2D)
 {
     if(!TriangularMesh::ExportCell0Ds(file0D))
@@ -521,11 +521,11 @@ bool TriangularMesh::ExportCell0Ds(string nomeFile)
 
     }
 
-    file<<"Id X Y\n";
+    file<<"Id,X,Y\n";
             for(unsigned int i=0;i<this->Cell0D.size();i++)
             {
              Punto p=this->Cell0D[i];
-             file<<i<<" "<<p.coordinate(0)<<" "<<p.coordinate(1)<<"\n";
+             file<<i<<","<<p.coordinate(0)<<","<<p.coordinate(1)<<"\n";
             }
      return true;
 }
@@ -541,16 +541,17 @@ bool TriangularMesh::ExportCell1Ds(string nomeFile)
       return false;
     }
 
-    file<<"Id Origin End\n";
-    int i=0;
-    for(auto it=this->Cell1D.begin();it!=this->Cell1D.end();it++)
+    file<<"IdL,X1,Y1,X2,Y2\n";
+    // int i=0;
+    for(unsigned int i=0;i<this->Cell1D.size();i++)
         {
+            Lato l=this->Cell1D[i];
             if(!this->DeleteCell1D[i]){
             file<<i;
-            file<<" "<<(*it).idV[0]<<" "<<(*it).idV[1];
+            file<<","<<Cell0D[l.idV[0]].coordinate(0)<<","<<Cell0D[l.idV[0]].coordinate(1)<<","<<Cell0D[l.idV[1]].coordinate(0)<<","<<Cell0D[l.idV[1]].coordinate(1);
             file<<"\n";
             }
-        i++;
+        //i++;
     }
      return true;
 }

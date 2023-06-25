@@ -11,12 +11,6 @@ using namespace std;
 using namespace Eigen;
 namespace SortLibrary {
 
-//  inline ostream &operator<<(ostream &os, const DecreasingInt &obj)
-//  {
-//    os << obj.value;
-//    return os;
-//  }
-
   inline bool operator==(const pair<unsigned int, double>& obj1, const pair<unsigned int, double>& obj2)
   {
     return obj1.second == obj2.second;

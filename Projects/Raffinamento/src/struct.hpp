@@ -22,7 +22,6 @@ namespace ProjectLibrary
     {
        unsigned int idL;
        array<unsigned int, 2> idV;
-       //double lunghezzaLato;
        Lato(unsigned int idL, array<unsigned int, 2> idV):idL(idL), idV(idV){}
     };
 
@@ -45,13 +44,12 @@ namespace ProjectLibrary
         bool ExportCell0Ds(string nomeFile);
 
         unsigned int NumberCell1D = 0; ///< number of Cell1D
-        std::vector<Lato> Cell1D = {}; ///< Cell1D id, size 1 x NumberCell1D //ELenco id Lati
-        std::vector<bool> DeleteCell1D  ={}; //True se elimino false se mantengo
+        std::vector<Lato> Cell1D = {}; ///< Cell1D id, size 1 x NumberCell1D //elenco id Lati
+        std::vector<bool> DeleteCell1D = {}; //True se elimino false se mantengo
         bool ImportCell1Ds();
         bool ExportCell1Ds(string nomeFile);
-        //double LunghezzaLato(const unsigned int& idL);
-        double LunghezzaLato(const Punto &P1, const Punto &P2);
-        unsigned int PuntoMedio(const unsigned int& idL);
+        static double LunghezzaLato(const Punto &P1, const Punto &P2);
+        unsigned int PuntoMedio(const unsigned int &idL);
 
         unsigned int NumberCell2D = 0; ///< number of Cell2D
         std::vector<Triangolo> Cell2D = {}; ///< Cell2D id, size 1 x NumberCell2D
@@ -68,4 +66,4 @@ namespace ProjectLibrary
 
 }
 
-#endif // __EMPTY_H
+#endif

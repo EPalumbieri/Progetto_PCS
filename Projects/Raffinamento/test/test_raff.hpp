@@ -12,7 +12,7 @@ using namespace SortLibrary;
 namespace ProjectLibrary
 {
 
-TEST(testArea, testValoreCorretto)
+TEST(testAreaFunzione, testAreaCalcolata)
 {
   Vector2d v1;
   v1 << 0,0;
@@ -55,7 +55,7 @@ TEST(TestSorting, TestHeapSortVectorPair)
   EXPECT_EQ(ssV, sortedV);
 }
 
-TEST(testLunghezzaL, testValCorr)
+TEST(testLenght, testLunghezzaVera)
 {
     Vector2d v1;
     v1 << 0,0;
@@ -72,10 +72,36 @@ TEST(testLunghezzaL, testValCorr)
     EXPECT_EQ(lunghezza, 1.0);
 }
 
-TEST(testLatoLungo, testLreale)
+TEST(testLatoLungo, testLatoLungoVerificato)
 {
-
+    unsigned int idT = 20;
+    unsigned int idll = TriangularMesh::LatoLungo(idT);
+    EXPECT_EQ(idll, 55);
 }
+
+TEST(testVerOpp, testVerOppVerificato)
+{
+    unsigned int idT = 20;
+    unsigned int idL = 55;
+
+    unsigned int vo = TriangularMesh::VerticeOpposto(20,55);
+
+    EXPECT_EQ(vo, 16);
+}
+
+TEST(testPuntoMedioFunc, testPM)
+{
+    TriangularMesh mesh;
+    mesh.ImportCell0Ds();
+    mesh.ImportCell1Ds();
+
+    unsigned int idLL = 55;
+    unsigned int idPM = TriangularMesh::PuntoMedio(idLL);
+
+    int last = size(mesh.NumberCell0D);
+    EXPECT_EQ(idPM, last);
+}
+
 }
 #endif // __TEST_EMPTY_H
 

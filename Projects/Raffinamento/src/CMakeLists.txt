@@ -3,7 +3,6 @@ list(APPEND raffinamento_headers ${CMAKE_CURRENT_SOURCE_DIR}/sorting.hpp)
 
 
 list(APPEND raffinamento_sources ${CMAKE_CURRENT_SOURCE_DIR}/empty_class.cpp)
-list(APPEND raffinamento_sources ${CMAKE_CURRENT_SOURCE_DIR}/import.cpp)
 
 
 

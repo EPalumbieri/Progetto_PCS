@@ -1,4 +1,4 @@
-list(APPEND raffinamento_test_headers ${CMAKE_CURRENT_SOURCE_DIR}/test_empty.hpp)
+list(APPEND raffinamento_test_headers ${CMAKE_CURRENT_SOURCE_DIR}/test_raff.hpp)
 
 list(APPEND raffinamento_test_includes ${CMAKE_CURRENT_SOURCE_DIR})
 
