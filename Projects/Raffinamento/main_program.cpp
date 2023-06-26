@@ -46,14 +46,14 @@ int main()
   // applico la bisezione fino a una certa tolleranza (da sistemare in relativa)
   double teta = 0.6;
   unsigned int num_triangoli=(int)(teta*mesh.NumberCell2D);
-  // cout<<num_triangoli<<endl;
+  cout<<num_triangoli<<endl;
   for (unsigned int i = 0; i < num_triangoli; i++)
   {
     if(mesh.DeleteCell2D[areeOrdinate[0].first]==false)
     {
         mesh.Bisezione(areeOrdinate[0].first);
-        areeOrdinate.erase(areeOrdinate.begin());
     }
+    areeOrdinate.erase(areeOrdinate.begin());
   }
 
   mesh.ExportMesh("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell0Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell1Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell2Ds.csv");
