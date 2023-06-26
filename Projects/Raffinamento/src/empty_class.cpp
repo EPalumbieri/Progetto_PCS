@@ -250,6 +250,7 @@ unsigned int TriangularMesh::PuntoMedio(const unsigned int& idL)
 //    NumberCell0D ++;
 //    return NumberCell0D -1;
 //}
+
 //----------------------------------------------------------------------------
 unsigned int TriangularMesh::LatoAccanto(const unsigned int& idT,const unsigned int& idL, const unsigned int& idP)
 {
@@ -270,218 +271,189 @@ unsigned int TriangularMesh::LatoAccanto(const unsigned int& idT,const unsigned 
     return LatoAccanto;
 }
 //----------------------------------------------------------------------------
-bool TriangularMesh::Bisezione(const unsigned int& idT)
+bool TriangularMesh::Bisezione(const unsigned int& T0)
 
-{ cout<< "bisezione per : "<< idT<< endl;
+{
+    // Dato il triangolo T0, trovo il suo lato maggiore L12
+    unsigned int L12 = LatoLungo(T0);
+    unsigned int PM = PuntoMedio(L12);
+    unsigned int P0 = VerticeOpposto(T0, L12);
 
-   unsigned int idLL = LatoLungo(idT);
-   unsigned int idVM = PuntoMedio(idLL);
-   cout<<"IDVM"<<idVM<<endl;
-   unsigned int idVO = VerticeOpposto(idT, idLL);
-   cout<<idVO<<endl;
-   this->DeleteCell1D[idLL]=true;  // cancello ID lato lungo
-   this->DeleteCell2D[idT]=true;   // cancello id triangolo
+    this->DeleteCell1D[L12]=true;  // cancello ID lato lungo
+    this->DeleteCell2D[T0]=true;  // cancello id triangolo
 
-   // costruisco la mediana
-   array<unsigned int, 2> LatoMO;
-   LatoMO[0] = idVM;
-   LatoMO[1] = idVO;
-   unsigned int idLatoMO =this->NumberCell1D;
+    // Costruisco LM0
+    array<unsigned int, 2> LM0ver;
+    LM0ver[0] = PM;
+    LM0ver[1] = P0;
+    unsigned int LM0 =this->NumberCell1D;
+    this->Cell1D.push_back(Lato(LM0, LM0ver));
+    this->DeleteCell1D.push_back(false);
+    this->NumberCell1D++;
 
-   this->Cell1D.push_back(Lato(idLatoMO, LatoMO)); // Lato(id,lato)
-   this->DeleteCell1D.push_back(false); //aggiungo id lato medio
-   this->NumberCell1D++;
-
-   // creo il lato piccolo 1
-   array<unsigned int, 2> idVertici = this->Cell1D[idLL].idV; // estraggo i vertici del lato più lungo
-
-   unsigned int idV1 = idVertici[0];
-   array<unsigned int, 2> Lato1Mvertici;
-   Lato1Mvertici[0] = idV1;
-   Lato1Mvertici[1] = idVM;
-   unsigned int idLato1M = this->NumberCell1D  ;
-
-   this->Cell1D.push_back(Lato(idLato1M, Lato1Mvertici));
-   this->DeleteCell1D.push_back(false);
-   this->NumberCell1D++;
+    // Costruisco L1M
+    unsigned int P1 = this->Cell1D[L12].idV[0];
+    array<unsigned int, 2> L1Mver;
+    L1Mver[0] = P1;
+    L1Mver[1] = PM;
+    unsigned int L1M = this->NumberCell1D;
+    this->Cell1D.push_back(Lato(L1M, L1Mver));
+    this->DeleteCell1D.push_back(false);
+    this->NumberCell1D++;
     
-   // creo il lato piccolo 2
-   unsigned int idV2 = idVertici[1];
-   array<unsigned int, 2> Lato2Mvertici;
-   Lato2Mvertici[0] = idV2;
-   Lato2Mvertici[1] = idVM;
-   unsigned int idLato2M =this->NumberCell1D;
+    // Costruisco L2M
+    unsigned int P2 = this->Cell1D[L12].idV[1];
+    array<unsigned int, 2> L2Mver;
+    L2Mver[0] = P2;
+    L2Mver[1] = PM;
+    unsigned int L2M = this->NumberCell1D;
+    this->Cell1D.push_back(Lato(L2M, L2Mver));
+    this->DeleteCell1D.push_back(false);
+    this->NumberCell1D++;
 
-   this->Cell1D.push_back(Lato(idLato2M, Lato2Mvertici));
-   this->DeleteCell1D.push_back(false);
-   this->NumberCell1D++;
+    unsigned int L1O = LatoAccanto(T0, L12, P1);
+    unsigned int L2O = LatoAccanto(T0, L12, P2);
 
-   unsigned int Lato1O = LatoAccanto(idT, idLL, idV1);
-   unsigned int Lato2O = LatoAccanto(idT, idLL, idV2);
+    // Costruisco il triangolo T1
+    unsigned int T1 = this->NumberCell2D;
+    array<unsigned int, 3> T1vertici = {P1, P0, PM};
+    array<unsigned int, 3> T1lati = {L1O, LM0, L1M};
+    double T1area=Area(this->Cell0D[T1vertici[0]],this->Cell0D[T1vertici[1]],this->Cell0D[T1vertici[2]]);
+    this->Cell2D.push_back(Triangolo(T1,T1vertici,T1lati,T1area));
+    this->DeleteCell2D.push_back(false);
+    this->NumberCell2D++;
 
-//----------------------------------------------------------------------------
-   //ADESSO CREO IL TRIANGOLO IdT1
-   array<unsigned int, 3> vertici1 = {idV1, idVO, idVM};
-   array<unsigned int, 3> lati1 = {Lato1O, idLatoMO, idLato1M};
-
-   //salvo il triagolo
-   unsigned int idT1 = this->NumberCell2D;
-   double area1=Area(this->Cell0D[vertici1[0]],this->Cell0D[vertici1[1]],this->Cell0D[vertici1[2]]);
-   this->Cell2D.push_back(Triangolo(idT1,vertici1,lati1,area1));
-   this->DeleteCell2D.push_back(false);
-   this->NumberCell2D++;
-
-    //aggiorno adiacenza per lato opposto Lato1O
-    auto it1 = this->Adjacency.find(Lato1O);
+    // Aggiorno l'adiacenza per L1O
+    auto it1 = this->Adjacency.find(L1O);
     if (it1 != this->Adjacency.end())
     {
         auto& valueList = it1->second;
-        auto itElement = std::find(valueList.begin(), valueList.end(), idT);
-        if (itElement != valueList.end()) {
-            valueList.erase(itElement); // Rimuovi vecchioId
-            valueList.push_back(idT1); // Inserisci il nuovo IdT2
-         }
-    };
+        auto itElement = std::find(valueList.begin(), valueList.end(), T0);
+        if (itElement != valueList.end())
+        {
+            valueList.erase(itElement);
+            valueList.push_back(T1);
+        }
+    }
 
-    // AGGIUNGO IL NUOVO LATO CON LE ADIACENZE idLato1M
-    this->Adjacency.insert({idLato1M,{idT1}});
+    // Creo l'adiacenza di L1M
+    this->Adjacency.insert({L1M,{T1}});
 
- //_____________________________________________________________________________
-
-    //CREO NUOVO TRIANGOLO IdT2
-    array<unsigned int, 3> vertici2 = {idV2, idVO, idVM};
-    array<unsigned int, 3> lati2 = {Lato2O,idLatoMO, idLato2M};
-
-    unsigned int IdT2 = this->NumberCell2D;
-    double area2=Area(this->Cell0D[vertici2[0]],this->Cell0D[vertici2[1]],this->Cell0D[vertici2[2]]);
-    this->Cell2D.push_back(Triangolo(IdT2,vertici2,lati2,area2)); //creo un IdT2
-    this->NumberCell2D++;
+    // Costruisco il triangolo T2
+    unsigned int T2 = this->NumberCell2D;
+    array<unsigned int, 3> T2vertici = {P2, P0, PM};
+    array<unsigned int, 3> T2lati = {L2O,LM0, L2M};
+    double T2area=Area(this->Cell0D[T2vertici[0]],this->Cell0D[T2vertici[1]],this->Cell0D[T2vertici[2]]);
+    this->Cell2D.push_back(Triangolo(T2,T2vertici,T2lati,T2area));
     this->DeleteCell2D.push_back(false);
+    this->NumberCell2D++;
 
-    //adiacenze
-    auto it2 = this->Adjacency.find(Lato2O);
+    // Aggiorno adiacenza per L20
+    auto it2 = this->Adjacency.find(L2O);
     if (it2 != this->Adjacency.end())
     {
         auto& valueList = it2->second;
-        auto itElement = std::find(valueList.begin(), valueList.end(), idT);
+        auto itElement = std::find(valueList.begin(), valueList.end(), T0);
         if (itElement != valueList.end()) {
-            valueList.erase(itElement); // Rimuovi vecchioId
-            valueList.push_back(IdT2); // Inserisci il nuovo IdT2
+            valueList.erase(itElement);
+            valueList.push_back(T2);
          }
     };
 
-    // AGGIUNGO IL NUOVO LATO CON LE ADIACENZE idLato2M
-    this->Adjacency.insert({idLato2M,{IdT2}});
-//-------------------------------------------*
+    // Aggiorno l'adiacenza di L2M
+    this->Adjacency.insert({L2M,{T2}});
 
-    //Aggiorno adiacenze per latoMO che ha sia il IdT2, IdT1
-    this->Adjacency.insert({idLatoMO,{idT1,IdT2}}); //aggiungo l'id del lato e lo associo all'id del triangolo
+    // Creo adiacenza per LMO
+    this->Adjacency.insert({LM0,{T1,T2}});
 
-//==============================================================================================================
-    //CASO IN CUI HA TRIANGOLO ADIACENTE//
-    unsigned int IdTA=0;
-    auto itA = this->Adjacency.find(idLL);
-    if (itA != this->Adjacency.end()) //controlla che l'elemento sia stato trovato correttamente
+    // Se T0 ha un triangolo adiacente T3
+    unsigned int T3=0;
+    auto it3 = this->Adjacency.find(L12);
+    if (it3 != this->Adjacency.end())
     {
- //iteriamo sugli elementi della lista che ha come chiave il lato lungo e prendiamo quello con id diverso da quello sopra per ricreare i 2 triangoli sotto
-    if (itA->second.size() > 1)
+        if (it3->second.size() > 1)
         {
-         if (*(itA->second.begin()) != idT)
-         {
-            IdTA=*(itA->second.begin());
-         }else{
-            IdTA=*(++itA->second.begin());
-         }
-                cout<<"LATO LUNGO: " << idLL<< " triangolo adiacente: ";
-                cout<< IdTA<<endl;
-            //devo creare solo il lato tra il punto medio e il nuovo vertice opposto
-             idVO = VerticeOpposto(IdTA, idLL);
-             cout<<idVO<<endl;
-             LatoMO[0] = idVM;
-             LatoMO[1] = idVO;
-             // unsigned int idLatoMO =this->NumberCell1D;
-             idLatoMO =this->NumberCell1D;
-             this->Cell1D.push_back(Lato(idLatoMO, LatoMO));
-             this->DeleteCell1D.push_back(false);
-             this->NumberCell1D++;
+            if (*(it3->second.begin()) != T0)
+            {
+                T3=*(it3->second.begin());
+            }
+            else
+            {
+                T3=*(++it3->second.begin());
+            }
 
-             Lato1O = LatoAccanto(IdTA, idLL, idV1);
-             Lato2O = LatoAccanto(IdTA, idLL, idV2);
+            // Trovo il vertice opposto P3
+            unsigned int P3 = VerticeOpposto(T3, L12);
 
-             //ADESSO CREO IL TRIANGOLO IdTr1A
-             vertici1 = {idV1, idVO, idVM};
-             lati1 = {Lato1O, idLatoMO, idLato1M};
+            // Costruisco LM3
+            unsigned int LM3 =this->NumberCell1D;
+            array<unsigned int, 2> LM3ver;
+            LM3ver[0] = PM;
+            LM3ver[1] = P3;
+            this->Cell1D.push_back(Lato(LM3, LM3ver));
+            this->DeleteCell1D.push_back(false);
+            this->NumberCell1D++;
 
-             //salvo il triangolo
-             unsigned int IdTr1A = this->NumberCell2D;
-             double area1A = Area(this->Cell0D[vertici1[0]],this->Cell0D[vertici1[1]],this->Cell0D[vertici1[2]]);
-             this->Cell2D.push_back(Triangolo(IdTr1A, vertici1, lati1,area1A)); //creo un IdTr1A
-             this->DeleteCell2D.push_back(false);
-             this->NumberCell2D++;
+            unsigned int L13 = LatoAccanto(T3, L12, P1);
+            unsigned int L23 = LatoAccanto(T3, L12, P2);
 
-             //ADIACENZA
-             //LATO PICCOLO
-             this->Adjacency[idLato1M].push_back(IdTr1A); // aggiungi all'adiacenza del lato piccolo il nuovo triangolo
+            // Costruisco il triangolo T4
+            unsigned int T4 = this->NumberCell2D;
+            array<unsigned int, 3> T4vertici = {P1, P3, PM};
+            array<unsigned int, 3> T4lati = {L13, LM3, L1M};
+            double T4area = Area(this->Cell0D[T4vertici[0]],this->Cell0D[T4vertici[1]],this->Cell0D[T4vertici[2]]);
+            this->Cell2D.push_back(Triangolo(T4, T4vertici, T4lati,T4area));
+            this->DeleteCell2D.push_back(false);
+            this->NumberCell2D++;
 
-             //SOSTIUIAMO VECCHIO ID CON ID Tr1A
-             auto it1A = this->Adjacency.find(Lato1O);
-             if (it1A != this->Adjacency.end())
-             {
-                 auto& valueList = it1A->second;
-                 auto itElement = std::find(valueList.begin(), valueList.end(), IdTA);
-                 if (itElement != valueList.end()) {
-                     valueList.erase(itElement); // Rimuovi vecchioId
-                     valueList.push_back(IdTr1A); // Inserisci il nuovo IdT2
-                  }
-             };
-             //_____________________________________________________________________________
+            // Aggiungo T4 all'adiacenza di L1M
+            this->Adjacency[L1M].push_back(T4);
 
-             //CREO NUOVO TRIANGOLO IdTrA2
-             vertici2 = {idV2, idVO, idVM};
-             lati2 = {Lato2O,idLatoMO, idLato2M};
+            // Aggiorno adiacenza per L13
+            auto it4 = this->Adjacency.find(L13);
+            if (it4 != this->Adjacency.end())
+            {
+                auto& valueList = it4->second;
+                auto itElement = std::find(valueList.begin(), valueList.end(), T3);
+                if (itElement != valueList.end())
+                {
+                    valueList.erase(itElement);
+                    valueList.push_back(T4);
+                }
+            }
 
-             unsigned int IdTr2A = this->NumberCell2D;
-             double area2A = Area(this->Cell0D[vertici2[0]],this->Cell0D[vertici2[1]],this->Cell0D[vertici2[2]]);
-             this->Cell2D.push_back(Triangolo(IdTr2A, vertici2,lati2,area2A)); //creo un IdT2
-             this->NumberCell2D++;
-             this->DeleteCell2D.push_back(false);
+            // Costruisco il triangolo T5
+            unsigned int T5 = this->NumberCell2D;
+            array<unsigned int, 3> T5vertici = {P2, P3, PM};
+            array<unsigned int, 3> T5lati = {L23,LM3, L2M};
+            double T5area = Area(this->Cell0D[T5vertici[0]],this->Cell0D[T5vertici[1]],this->Cell0D[T5vertici[2]]);
+            this->Cell2D.push_back(Triangolo(T5, T5vertici,T5lati,T5area));
+            this->DeleteCell2D.push_back(false);
+            this->NumberCell2D++;
 
-             //adiacenze
-             //lato piccolo
-             this->Adjacency[idLato2M].push_back(IdTr2A);
+            // Aggiungo T5 all'adiacenza di L2M
+            this->Adjacency[L2M].push_back(T5);
 
-            //SOSTIUIAMO VECCHIO ID CON ID Tr1A
-             auto it2A = this->Adjacency.find(Lato2O);
-             if (it2A != this->Adjacency.end())
-             {
-                auto& valueList = it2A->second;
-                auto itElement = std::find(valueList.begin(), valueList.end(), IdTA);
-                if (itElement != valueList.end()) {
-                    valueList.erase(itElement); // Rimuovi vecchioId
-                    valueList.push_back(IdTr2A); // Inserisci il nuovo IdT2
-                 }
-             };
-             //------
-             //ADIACENZA LATO MEDIO
-             this->Adjacency.insert({idLatoMO,{IdTr1A,IdTr2A}});
-             this->DeleteCell2D[IdTA]=true; //ho cambiato da false a true
+            // Aggiorno adiacenza per L23
+            auto it5 = this->Adjacency.find(L23);
+            if (it5 != this->Adjacency.end())
+            {
+                auto& valueList = it5->second;
+                auto itElement = std::find(valueList.begin(), valueList.end(), T3);
+                if (itElement != valueList.end())
+                {
+                    valueList.erase(itElement);
+                    valueList.push_back(T5);
+                }
+            }
 
-    };
+            // Creo adiacenza per LM3
+            this->Adjacency.insert({LM3,{T4,T5}});
 
-//=========================================================================
-//    //elimino chiave e adiacenze lato lungo
-    this->Adjacency.erase(idLL);
-
-    this->DeleteCell2D[idT]=true;
-
-    return 0; // zero xk elimini il triangolo bisezionato
-
-    // zero xk elimini il triangolo bisezionato
-
-    this->DeleteCell2D[idT]=true;
-    return 0;
-
-}
+            // Elimino il triangolo T3
+            this->DeleteCell2D[T3]=true; //ho cambiato da false a true
+        }
+    }
     return 0;
 }
 

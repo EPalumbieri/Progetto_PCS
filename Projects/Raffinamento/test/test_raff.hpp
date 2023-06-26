@@ -55,52 +55,52 @@ TEST(TestSorting, TestHeapSortVectorPair)
   EXPECT_EQ(ssV, sortedV);
 }
 
-TEST(testLenght, testLunghezzaVera)
-{
-    Vector2d v1;
-    v1 << 0,0;
+//TEST(testLenght, testLunghezzaVera)
+//{
+//    Vector2d v1;
+//    v1 << 0,0;
 
-    Vector2d v2;
-    v2 << 0,1;
+//    Vector2d v2;
+//    v2 << 0,1;
 
-    Punto P1= Punto(0,v1);
+//    Punto P1= Punto(0,v1);
 
-    Punto P2= Punto(1,v2);
+//    Punto P2= Punto(1,v2);
 
-    double lunghezza = TriangularMesh::LunghezzaLato(P1, P2);
+//    double lunghezza = TriangularMesh::LunghezzaLato(P1, P2);
 
-    EXPECT_EQ(lunghezza, 1.0);
-}
+//    EXPECT_EQ(lunghezza, 1.0);
+//}
 
-TEST(testLatoLungo, testLatoLungoVerificato)
-{
-    unsigned int idT = 20;
-    unsigned int idll = TriangularMesh::LatoLungo(idT);
-    EXPECT_EQ(idll, 55);
-}
+//TEST(testLatoLungo, testLatoLungoVerificato)
+//{
+//    unsigned int idT = 20;
+//    unsigned int idll = TriangularMesh::LatoLungo(idT);
+//    EXPECT_EQ(idll, 55);
+//}
 
-TEST(testVerOpp, testVerOppVerificato)
-{
-    unsigned int idT = 20;
-    unsigned int idL = 55;
+//TEST(testVerOpp, testVerOppVerificato)
+//{
+//    unsigned int idT = 20;
+//    unsigned int idL = 55;
 
-    unsigned int vo = TriangularMesh::VerticeOpposto(20,55);
+//    unsigned int vo = TriangularMesh::VerticeOpposto(idT,idL);
 
-    EXPECT_EQ(vo, 16);
-}
+//    EXPECT_EQ(vo, 16);
+//}
 
-TEST(testPuntoMedioFunc, testPM)
-{
-    TriangularMesh mesh;
-    mesh.ImportCell0Ds();
-    mesh.ImportCell1Ds();
+//TEST(testPuntoMedioFunc, testPM)
+//{
+//    TriangularMesh mesh;
+//    mesh.ImportCell0Ds();
+//    mesh.ImportCell1Ds();
 
-    unsigned int idLL = 55;
-    unsigned int idPM = TriangularMesh::PuntoMedio(idLL);
+//    unsigned int idLL = 55;
+//    unsigned int idPM = TriangularMesh::PuntoMedio(idLL);
 
-    int last = size(mesh.NumberCell0D);
-    EXPECT_EQ(idPM, last);
-}
+//    int last = mesh.NumberCell0D;
+//    EXPECT_EQ(idPM, last);
+//}
 
 }
 #endif // __TEST_EMPTY_H

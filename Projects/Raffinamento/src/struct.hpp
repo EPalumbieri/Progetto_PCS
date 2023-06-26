@@ -48,7 +48,7 @@ namespace ProjectLibrary
         std::vector<bool> DeleteCell1D = {}; //True se elimino false se mantengo
         bool ImportCell1Ds();
         bool ExportCell1Ds(string nomeFile);
-        static double LunghezzaLato(const Punto &P1, const Punto &P2);
+        double LunghezzaLato(const Punto &P1, const Punto &P2);
         unsigned int PuntoMedio(const unsigned int &idL);
 
         unsigned int NumberCell2D = 0; ///< number of Cell2D
