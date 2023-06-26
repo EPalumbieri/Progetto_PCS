@@ -49,22 +49,13 @@ int main()
   // cout<<num_triangoli<<endl;
   for (unsigned int i = 0; i < num_triangoli; i++)
   {
-    if(mesh.DeleteCell2D[areeOrdinate[0].first]==false){
-    mesh.Bisezione(areeOrdinate[0].first);
-    areeOrdinate.erase(areeOrdinate.begin());
+    if(mesh.DeleteCell2D[areeOrdinate[0].first]==false)
+    {
+        mesh.Bisezione(areeOrdinate[0].first);
+        areeOrdinate.erase(areeOrdinate.begin());
     }
-
-  //for (unsigned int i = 1; i < static_cast<unsigned int>(num_triangoli); i++)
-  for (unsigned int i = 0; i <20; i++)
-  {
-      if(mesh.DeleteCell2D[areeOrdinate[0].first]==false)
-      { mesh.Bisezione(areeOrdinate[0].first);
-        areeOrdinate.erase(areeOrdinate.begin());}
-      areeOrdinate.erase(areeOrdinate.begin());
   }
 
-
-}
   mesh.ExportMesh("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell0Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell1Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell2Ds.csv");
 
 }

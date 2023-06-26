@@ -271,16 +271,16 @@ unsigned int TriangularMesh::LatoAccanto(const unsigned int& idT,const unsigned 
     return LatoAccanto;
 }
 //----------------------------------------------------------------------------
-bool TriangularMesh::Bisezione(const unsigned int& T0)
+bool TriangularMesh::Bisezione(const unsigned int& idT)
 
 {
     // Dato il triangolo T0, trovo il suo lato maggiore L12
-    unsigned int L12 = LatoLungo(T0);
+    unsigned int L12 = LatoLungo(idT);
     unsigned int PM = PuntoMedio(L12);
-    unsigned int P0 = VerticeOpposto(T0, L12);
+    unsigned int P0 = VerticeOpposto(idT, L12);
 
     this->DeleteCell1D[L12]=true;  // cancello ID lato lungo
-    this->DeleteCell2D[T0]=true;  // cancello id triangolo
+    this->DeleteCell2D[idT]=true;  // cancello id triangolo
 
     // Costruisco LM0
     array<unsigned int, 2> LM0ver;
@@ -311,8 +311,8 @@ bool TriangularMesh::Bisezione(const unsigned int& T0)
     this->DeleteCell1D.push_back(false);
     this->NumberCell1D++;
 
-    unsigned int L1O = LatoAccanto(T0, L12, P1);
-    unsigned int L2O = LatoAccanto(T0, L12, P2);
+    unsigned int L1O = LatoAccanto(idT, L12, P1);
+    unsigned int L2O = LatoAccanto(idT, L12, P2);
 
     // Costruisco il triangolo T1
     unsigned int T1 = this->NumberCell2D;
@@ -328,7 +328,7 @@ bool TriangularMesh::Bisezione(const unsigned int& T0)
     if (it1 != this->Adjacency.end())
     {
         auto& valueList = it1->second;
-        auto itElement = std::find(valueList.begin(), valueList.end(), T0);
+        auto itElement = std::find(valueList.begin(), valueList.end(), idT);
         if (itElement != valueList.end())
         {
             valueList.erase(itElement);
@@ -353,12 +353,13 @@ bool TriangularMesh::Bisezione(const unsigned int& T0)
     if (it2 != this->Adjacency.end())
     {
         auto& valueList = it2->second;
-        auto itElement = std::find(valueList.begin(), valueList.end(), T0);
-        if (itElement != valueList.end()) {
+        auto itElement = std::find(valueList.begin(), valueList.end(), idT);
+        if (itElement != valueList.end())
+        {
             valueList.erase(itElement);
             valueList.push_back(T2);
-         }
-    };
+        }
+    }
 
     // Aggiorno l'adiacenza di L2M
     this->Adjacency.insert({L2M,{T2}});
@@ -373,7 +374,7 @@ bool TriangularMesh::Bisezione(const unsigned int& T0)
     {
         if (it3->second.size() > 1)
         {
-            if (*(it3->second.begin()) != T0)
+            if (*(it3->second.begin()) != idT)
             {
                 T3=*(it3->second.begin());
             }
@@ -515,17 +516,17 @@ bool TriangularMesh::ExportCell1Ds(string nomeFile)
 
     file<<"IdL,X1,Y1,X2,Y2\n";
     // int i=0;
-    for(unsigned int i=0;i<this->Cell1D.size();i++)
+    for(unsigned int i=0; i<this->Cell1D.size(); i++)
         {
             Lato l=this->Cell1D[i];
-            if(!this->DeleteCell1D[i]){
+            if(!this->DeleteCell1D[i])
+            {
             file<<i;
             file<<","<<Cell0D[l.idV[0]].coordinate(0)<<","<<Cell0D[l.idV[0]].coordinate(1)<<","<<Cell0D[l.idV[1]].coordinate(0)<<","<<Cell0D[l.idV[1]].coordinate(1);
             file<<"\n";
             }
-        //i++;
-    }
-     return true;
+        }
+    return true;
 }
 
 bool TriangularMesh::ExportCell2Ds(string nomeFile)
@@ -539,19 +540,20 @@ bool TriangularMesh::ExportCell2Ds(string nomeFile)
       return false;
     }
 
-    file<<"Id Vertices Edges\n";
+    file<<"Id,Vertices,Edges\n";
     int i=0;
             for(auto it=this->Cell2D.begin();it!=this->Cell2D.end();it++)
             {
-             if(!this->DeleteCell2D[i]){
-             Triangolo t=(*it);
-             if(t.idV[0]!=0 && t.idV[1]!=0 && t.idV[1]!=0)
-               file<<i<<" "<<t.idV[0]<<" "<<t.idV[1]<<" "<<t.idV[2]
-                    <<" "<<t.idL[0]<<" "<<t.idL[1]<<" "<<t.idL[2]<<"\n";
-             }
-             i++;
+                if(!this->DeleteCell2D[i])
+                {
+                    Triangolo t=(*it);
+                    if(t.idV[0]!=0 && t.idV[1]!=0 && t.idV[1]!=0)
+                    file<< i <<","<<t.idV[0]<<","<<t.idV[1]<<","<<t.idV[2]<<","<<t.idL[0]<<","<<t.idL[1]<<","<<t.idL[2]<<"\n";
+                }
+                i++;
             }
-     return true;
+    return true;
 }
+
 }
 
