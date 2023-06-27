@@ -138,7 +138,8 @@ TEST(testLatoAccantoFunc,testLatoAccanto)
 
     EXPECT_EQ(IdL10,L10Giusto);
 }
-
+//*************************************************************** TEST BISEZIONE
+//TEST T1
 TEST(testBisezioneFunc,testBisezioneT1vert)
 {
     TriangularMesh meshTest;
@@ -149,7 +150,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     unsigned int idT= 74;
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO P1,P0,PM
-    array<unsigned int, 3> idVT1= meshTest.Cell2D[144].idV;
+    array<unsigned int, 3> idVT1= meshTest.Cell2D[meshTest.NumberCell2D-4].idV;
     array<unsigned int, 3> idVT1Giusto={50,47,89};
     EXPECT_EQ(idVT1,idVT1Giusto);
  }
@@ -166,11 +167,12 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     unsigned int idT= 74;
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO L1O, LM0, L1M
-    array<unsigned int, 3> idlT1= meshTest.Cell2D[144].idL;
+    array<unsigned int, 3> idlT1= meshTest.Cell2D[meshTest.NumberCell2D-4].idL;
     array<unsigned int, 3> idlT1Giusto={139,232,233};
     EXPECT_EQ(idlT1,idlT1Giusto);
  }
 
+// TEST TRIANGOLO T2
  TEST(testBisezioneFunc,testBisezioneT2vert)
  {
     TriangularMesh meshTest;
@@ -181,7 +183,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     unsigned int idT= 74;
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO P2,P0,PM
-    array<unsigned int, 3> idVT2= meshTest.Cell2D[145].idV;
+    array<unsigned int, 3> idVT2= meshTest.Cell2D[meshTest.NumberCell2D-3].idV;
     array<unsigned int, 3> idVT2Giusto={55,47,89};
     EXPECT_EQ(idVT2,idVT2Giusto);
  }
@@ -198,13 +200,78 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     unsigned int idT= 74;
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO L2O, LM0, L2M
-    array<unsigned int, 3> idlT2= meshTest.Cell2D[145].idL;
+    array<unsigned int, 3> idlT2= meshTest.Cell2D[meshTest.NumberCell2D-3].idL;
     array<unsigned int, 3> idlT2Giusto={9,232,234};
     EXPECT_EQ(idlT2,idlT2Giusto);
  }
 
 
- // test su 80 cioe angolo adicente faccio domani
+ //TEST T4
+ TEST(testBisezioneFunc,testBisezioneT4vert)
+ {
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    meshTest.Bisezione(idT);
+    // IN ORDINE GLI INSERIAMO P1,P3,PM
+    array<unsigned int, 3> idVT4= meshTest.Cell2D[meshTest.NumberCell2D-2].idV;
+    array<unsigned int, 3> idVT4Giusto={50,59,89};
+    EXPECT_EQ(idVT4,idVT4Giusto);
+ }
+
+
+
+ TEST(testBisezioneFunc,testBisezioneT4lati)
+ {
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    meshTest.Bisezione(idT);
+    // IN ORDINE GLI INSERIAMO L13, LM3, L1M
+    array<unsigned int, 3> idlT4= meshTest.Cell2D[meshTest.NumberCell2D-2].idL;
+    array<unsigned int, 3> idlT4Giusto={147,235,233};
+    EXPECT_EQ(idlT4,idlT4Giusto);
+ }
+
+ // TEST TRIANGOLO T5
+ TEST(testBisezioneFunc,testBisezioneT5vert)
+ {
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    meshTest.Bisezione(idT);
+    // IN ORDINE GLI INSERIAMO P2,P3,PM
+    array<unsigned int, 3> idVT5= meshTest.Cell2D[meshTest.NumberCell2D-1].idV;
+    array<unsigned int, 3> idVT5Giusto={55,59,89};
+    EXPECT_EQ(idVT5,idVT5Giusto);
+ }
+
+
+
+ TEST(testBisezioneFunc,testBisezioneT5lati)
+ {
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    meshTest.Bisezione(idT);
+    // IN ORDINE GLI INSERIAMO L23, LM3, L2M
+    array<unsigned int, 3> idlT5= meshTest.Cell2D[meshTest.NumberCell2D-1].idL;
+    array<unsigned int, 3> idlT5Giusto={148,235,234};
+    EXPECT_EQ(idlT5,idlT5Giusto);
+ }
+
 
 }
 #endif // __TEST_EMPTY_H
