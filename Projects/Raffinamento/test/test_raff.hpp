@@ -12,6 +12,8 @@ using namespace SortLibrary;
 namespace ProjectLibrary
 {
 
+//TEST METODI STATICI CIOE CHE NON UTILIZZANO ATTRIBUTI DELLA MESH ( GUARDARE FUNZIONIZIONI ) TriangularMesh::METODO(input)
+//diamo noi input
 TEST(testAreaFunzione, testAreaCalcolata)
 {
   Vector2d v1;
@@ -55,52 +57,154 @@ TEST(TestSorting, TestHeapSortVectorPair)
   EXPECT_EQ(ssV, sortedV);
 }
 
-//TEST(testLenght, testLunghezzaVera)
-//{
-//    Vector2d v1;
-//    v1 << 0,0;
+TEST(testLenght, testLunghezzaVera)
+{
+    Vector2d v1;
+    v1 << 0,0;
 
-//    Vector2d v2;
-//    v2 << 0,1;
+    Vector2d v2;
+    v2 << 0,1;
 
-//    Punto P1= Punto(0,v1);
+    Punto P1= Punto(0,v1);
 
-//    Punto P2= Punto(1,v2);
+    Punto P2= Punto(1,v2);
 
-//    double lunghezza = TriangularMesh::LunghezzaLato(P1, P2);
+    double lunghezza = TriangularMesh::LunghezzaLato(P1, P2);
 
-//    EXPECT_EQ(lunghezza, 1.0);
-//}
+    EXPECT_EQ(lunghezza, 1.0);
+}
 
-//TEST(testLatoLungo, testLatoLungoVerificato)
-//{
-//    unsigned int idT = 20;
-//    unsigned int idll = TriangularMesh::LatoLungo(idT);
-//    EXPECT_EQ(idll, 55);
-//}
 
-//TEST(testVerOpp, testVerOppVerificato)
-//{
-//    unsigned int idT = 20;
-//    unsigned int idL = 55;
+//su metodi non statici --------- si usano attrbuti della mesh nella funzione quindi si scrive nomeOggetto.metodo(input)
 
-//    unsigned int vo = TriangularMesh::VerticeOpposto(idT,idL);
+TEST(testLatoLungo, testLatoLungoVerificato)
+{   TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
 
-//    EXPECT_EQ(vo, 16);
-//}
+    unsigned int idT = 74;
+    unsigned int idll = meshTest.LatoLungo(idT);
+    EXPECT_EQ(idll, 142);
+}
 
-//TEST(testPuntoMedioFunc, testPM)
-//{
-//    TriangularMesh mesh;
-//    mesh.ImportCell0Ds();
-//    mesh.ImportCell1Ds();
+TEST(testVerOpp, testVerOppVerificato)
+{
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
 
-//    unsigned int idLL = 55;
-//    unsigned int idPM = TriangularMesh::PuntoMedio(idLL);
+    unsigned int idT = 74;
+    unsigned int idL = 142;
 
-//    int last = mesh.NumberCell0D;
-//    EXPECT_EQ(idPM, last);
-//}
+    unsigned int VO = meshTest.VerticeOpposto(idT,idL);
+
+    EXPECT_EQ(VO,47);
+}
+
+TEST(testPuntoMedioFunc, testPM)
+{
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+
+    unsigned int idLL =142;
+    unsigned int idPMgiusto = meshTest.PuntoMedio(idLL);
+    unsigned int idPmCell0D = meshTest.Cell0D[idPMgiusto].idP;
+    //SERVE A VERIFICARE SE METTE E SLAVA BENE L'OGGETTO PUNTO IN CELL0D DELLA MESH
+
+    EXPECT_EQ(idPmCell0D,idPMgiusto);
+}
+
+
+TEST(testLatoAccantoFunc,testLatoAccanto)
+{
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    unsigned int idL12= 142;
+    unsigned int idP1= 50;
+
+    //SERVE A VERIFICARE SE METTE E SALVA BENE L'OGGETTO PUNTO IN CELL0D DELLA MESH
+    unsigned int L10Giusto=139;
+
+    unsigned int IdL10= meshTest.LatoAccanto(idT,idL12,idP1);;
+
+    EXPECT_EQ(IdL10,L10Giusto);
+}
+
+TEST(testBisezioneFunc,testBisezioneT1vert)
+{
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    meshTest.Bisezione(idT);
+    // IN ORDINE GLI INSERIAMO P1,P0,PM
+    array<unsigned int, 3> idVT1= meshTest.Cell2D[144].idV;
+    array<unsigned int, 3> idVT1Giusto={50,47,89};
+    EXPECT_EQ(idVT1,idVT1Giusto);
+ }
+
+
+
+ TEST(testBisezioneFunc,testBisezioneT1lati)
+ {
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    meshTest.Bisezione(idT);
+    // IN ORDINE GLI INSERIAMO L1O, LM0, L1M
+    array<unsigned int, 3> idlT1= meshTest.Cell2D[144].idL;
+    array<unsigned int, 3> idlT1Giusto={139,232,233};
+    EXPECT_EQ(idlT1,idlT1Giusto);
+ }
+
+ TEST(testBisezioneFunc,testBisezioneT2vert)
+ {
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    meshTest.Bisezione(idT);
+    // IN ORDINE GLI INSERIAMO P2,P0,PM
+    array<unsigned int, 3> idVT2= meshTest.Cell2D[145].idV;
+    array<unsigned int, 3> idVT2Giusto={55,47,89};
+    EXPECT_EQ(idVT2,idVT2Giusto);
+ }
+
+
+
+ TEST(testBisezioneFunc,testBisezioneT2lati)
+ {
+    TriangularMesh meshTest;
+    meshTest.ImportCell0Ds();
+    meshTest.ImportCell1Ds();
+    meshTest.ImportCell2Ds();
+
+    unsigned int idT= 74;
+    meshTest.Bisezione(idT);
+    // IN ORDINE GLI INSERIAMO L2O, LM0, L2M
+    array<unsigned int, 3> idlT2= meshTest.Cell2D[145].idL;
+    array<unsigned int, 3> idlT2Giusto={9,232,234};
+    EXPECT_EQ(idlT2,idlT2Giusto);
+ }
+
+
+ // test su 80 cioe angolo adicente faccio domani
 
 }
 #endif // __TEST_EMPTY_H

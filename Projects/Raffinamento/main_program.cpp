@@ -56,7 +56,7 @@ int main()
     areeOrdinate.erase(areeOrdinate.begin());
   }
 
-  mesh.ExportMesh("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell0Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell1Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell2Ds.csv");
+  mesh.ExportMesh("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell0Ds.csv","C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell1Ds.csv","C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell2Ds.csv");
 
 }
 
