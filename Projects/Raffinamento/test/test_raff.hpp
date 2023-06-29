@@ -12,8 +12,6 @@ using namespace SortLibrary;
 namespace ProjectLibrary
 {
 
-//TEST METODI STATICI CIOE CHE NON UTILIZZANO ATTRIBUTI DELLA MESH ( GUARDARE FUNZIONIZIONI ) TriangularMesh::METODO(input)
-//diamo noi input
 TEST(testAreaFunzione, testAreaCalcolata)
 {
   Vector2d v1;
@@ -75,7 +73,6 @@ TEST(testLenght, testLunghezzaVera)
 }
 
 
-//su metodi non statici --------- si usano attrbuti della mesh nella funzione quindi si scrive nomeOggetto.metodo(input)
 
 TEST(testLatoLungo, testLatoLungoVerificato)
 {   TriangularMesh meshTest;
@@ -114,8 +111,6 @@ TEST(testPuntoMedioFunc, testPM)
     unsigned int idLL =142;
     unsigned int idPMgiusto = meshTest.PuntoMedio(idLL);
     unsigned int idPmCell0D = meshTest.Cell0D[idPMgiusto].idP;
-    //SERVE A VERIFICARE SE METTE E SLAVA BENE L'OGGETTO PUNTO IN CELL0D DELLA MESH
-
     EXPECT_EQ(idPmCell0D,idPMgiusto);
 }
 
