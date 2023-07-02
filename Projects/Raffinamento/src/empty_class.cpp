@@ -13,7 +13,7 @@ namespace ProjectLibrary
 bool TriangularMesh::ImportCell0Ds()
 {
     ifstream file;
-    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell0Ds.csv");
+    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/Cell0Ds.csv");
     if (file.fail())
     {
     cerr<<"file open failed 0"<< endl;
@@ -58,8 +58,7 @@ bool TriangularMesh::ImportCell0Ds()
 bool TriangularMesh::ImportCell1Ds()
 {
     ifstream file;
-    file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell1Ds.csv");
-
+    file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/Cell1Ds.csv");
     if (file.fail())
     {
     cerr<<"file open failed 1"<< endl;
@@ -105,7 +104,7 @@ bool TriangularMesh::ImportCell1Ds()
 bool TriangularMesh::ImportCell2Ds()
 { 
   ifstream file;
-  file.open("C:/Users/marti/OneDrive/Desktop/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/Cell2Ds.csv");
+  file.open("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/Cell2Ds.csv");
   if (file.fail())
   {
   cerr<<"file open failed 2"<< endl;
@@ -167,7 +166,7 @@ bool TriangularMesh::ImportCell2Ds()
 
  double TriangularMesh::LunghezzaLato(const Punto &P1, const Punto &P2)
  {
-    double lunghezza = sqrt(abs((P1.coordinate(0)-P2.coordinate(0))*(P1.coordinate(0)-P2.coordinate(0))-(P1.coordinate(1)-P2.coordinate(1))*(P1.coordinate(1)-P2.coordinate(1))));
+    double lunghezza = sqrt(abs((P1.coordinate(0)-P2.coordinate(0))*(P1.coordinate(0)-P2.coordinate(0))+(P1.coordinate(1)-P2.coordinate(1))*(P1.coordinate(1)-P2.coordinate(1))));
     return lunghezza;
  }
 
@@ -232,8 +231,6 @@ unsigned int TriangularMesh::PuntoMedio(const unsigned int& idL)
 
     return NumberCell0D-1; //-1 perché parto da zero
 }
-
-
 //----------------------------------------------------------------------------
 unsigned int TriangularMesh::LatoAccanto(const unsigned int& idT,const unsigned int& idL, const unsigned int& idP)
 {
