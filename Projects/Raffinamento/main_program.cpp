@@ -39,14 +39,10 @@ int main()
       idArea.push_back(std::pair<unsigned int, double>(i,mesh.Cell2D[i].Area));
   }
 
-  // opzione 1: ordino il vettore in base alle aree
+  // OPZIONE 1 TOLLERANZA SUL NUMERO DI TRIANGOLI
   vector<pair<unsigned int, double>> areeOrdinate = SortLibrary::HeapSort(idArea);
-
-  // o commenti questo
-  // applico la bisezione fino a una certa tolleranza
   double teta = 0.9;
   unsigned int num_triangoli=(int)(teta*mesh.NumberCell2D);
-  // cout<<num_triangoli<<endl;
   for (unsigned int i = 0; i < num_triangoli; i++)
   {
     if(mesh.DeleteCell2D[areeOrdinate[0].first]==false)
@@ -56,39 +52,21 @@ int main()
     areeOrdinate.erase(areeOrdinate.begin());
   }
 
-//  // o commenti questo.
-//  // opzione 2
-//  int dim = areeOrdinate.size();
-//  double perc = 0.7;
-//  int pos = floor(dim*perc);
-//  double areaMax = areeOrdinate[pos].second;
-//  double gamma = (1-perc) * areaMax;
-//  while (idArea.size() > 0)
-//  {
-//      if (idArea.back().second > gamma)
-//      {
-//          unsigned int a = mesh.NumberCell2D;
-//          if(!mesh.DeleteCell2D[idArea.back().first])
-//          {
-//            mesh.Bisezione(idArea.back().first);
-//            idArea.pop_back();
-//          }
-//          else idArea.pop_back();
-
-//          unsigned int b = mesh.NumberCell2D;
-//          for (unsigned int i = a; i < b; i++)
-//          {
-//              idArea.push_back(std::pair<unsigned int, double>(i,mesh.Cell2D[i].Area));
-//          }
-//      }
-//      else
-//      {
-//          idArea.pop_back();
-//      }
-//  }
-
+  // OPZIONE 2 TOLLERANZA AREA
+  while (mesh.idAreeDaBisezionare.size() > 0)
+  {
+      if(!mesh.DeleteCell2D[mesh.idAreeDaBisezionare.back().first])
+      {
+          unsigned int idT = mesh.idAreeDaBisezionare.back().first;
+          mesh.idAreeDaBisezionare.pop_back();
+          mesh.Bisezione(idT);
+      }
+      else mesh.idAreeDaBisezionare.pop_back();
+  }
   mesh.ExportMesh("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/NewCell0Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/NewCell1Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/NewCell2Ds.csv");
 }
+
+// (X2-X1)*iHat+(Y2-Y1)*jHat
 
 
 

@@ -36,7 +36,6 @@ bool TriangularMesh::ImportCell0Ds()
   }
 
   this->Cell0D.reserve(this->NumberCell0D);
-  // this->Cell0DCoordinates.reserve(this->NumberCell0D);
 
   for (const string& line : listLines)
   {
@@ -81,7 +80,6 @@ bool TriangularMesh::ImportCell1Ds()
   }
 
   this->Cell1D.reserve(this->NumberCell1D);
-  //this->Cell1DVertices.reserve(this->NumberCell1D);
   this->DeleteCell1D.resize(this->NumberCell1D); //li inizializza a false
 
   for (const string& line : listLines)
@@ -150,14 +148,15 @@ bool TriangularMesh::ImportCell2Ds()
               this->Adjacency[edges[i]].push_back(id); // aggiungo l'id del triangolo
     }
     double area=Area(this->Cell0D[vertices[0]],this->Cell0D[vertices[1]],this->Cell0D[vertices[2]]);
+    if(area>this->tolleranza){
+        this->idAreeDaBisezionare.push_back(std::pair<unsigned int,double>(id,area));
+    }
     this->Cell2D.push_back(Triangolo(id, vertices, edges, area));
-//    this->DeleteCell1D.push_back(true);
   }
   file.close();
   return true;
 }
 // ***************************************************************************
-
  double TriangularMesh::Area(const Punto &P1, const Punto &P2, const Punto &P3)
 {
     return abs((P1.coordinate(0)*(P2.coordinate(1)-P3.coordinate(1))+P2.coordinate(0)*(P3.coordinate(1)-P1.coordinate(1))+P3.coordinate(0)*(P1.coordinate(1)-P2.coordinate(1)))/2);
@@ -173,7 +172,7 @@ bool TriangularMesh::ImportCell2Ds()
 //----------------------------------------------------------------------------
  unsigned int TriangularMesh::LatoLungo(const unsigned int &idT)
   {
-    array<unsigned int, 3> idLati = Cell2D[idT].idL;
+    array<unsigned int, 3> idLati = this->Cell2D[idT].idL;
     // Calcola la lunghezza di ogni lato e determina l'id del lato più lungo
     double lunghezzaMax = 0.0;
     unsigned int idLatoLungo = 0; // qui 0 non va bene perché corrisponde ad un id >>>> unsigned int idLatoLungo;
@@ -219,15 +218,15 @@ bool TriangularMesh::ImportCell2Ds()
 //----------------------------------------------------------------------------
 unsigned int TriangularMesh::PuntoMedio(const unsigned int& idL)
 {
-    Vector2d punto1 = Cell0D[Cell1D[idL].idV[0]].coordinate;
-    Vector2d punto2 = Cell0D[Cell1D[idL].idV[1]].coordinate;
+    Vector2d punto1 = this->Cell0D[Cell1D[idL].idV[0]].coordinate;
+    Vector2d punto2 = this->Cell0D[Cell1D[idL].idV[1]].coordinate;
 
     Vector2d puntoMedio;
     puntoMedio(0) = (punto1[0] + punto2[0])/2;
     puntoMedio(1) = (punto1[1] + punto2[1])/2;
 
-    Cell0D.push_back(Punto(NumberCell0D, puntoMedio));
-    NumberCell0D ++;
+    this->Cell0D.push_back(Punto(this->NumberCell0D, puntoMedio));
+    this->NumberCell0D ++;
 
     return NumberCell0D-1; //-1 perché parto da zero
 }
@@ -299,6 +298,10 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
     array<unsigned int, 3> T1vertici = {P1, P0, PM};
     array<unsigned int, 3> T1lati = {L1O, LM0, L1M};
     double T1area=Area(this->Cell0D[T1vertici[0]],this->Cell0D[T1vertici[1]],this->Cell0D[T1vertici[2]]);
+    if(T1area>this->tolleranza)
+    {
+        this->idAreeDaBisezionare.push_back(std::pair<unsigned int,double>(T1,T1area));
+    }
     this->Cell2D.push_back(Triangolo(T1,T1vertici,T1lati,T1area));
     this->DeleteCell2D.push_back(false);
     this->NumberCell2D++;
@@ -324,6 +327,10 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
     array<unsigned int, 3> T2vertici = {P2, P0, PM};
     array<unsigned int, 3> T2lati = {L2O,LM0, L2M};
     double T2area=Area(this->Cell0D[T2vertici[0]],this->Cell0D[T2vertici[1]],this->Cell0D[T2vertici[2]]);
+    if(T2area>this->tolleranza)
+    {
+        this->idAreeDaBisezionare.push_back(std::pair<unsigned int,double>(T2,T2area));
+    }
     this->Cell2D.push_back(Triangolo(T2,T2vertici,T2lati,T2area));
     this->DeleteCell2D.push_back(false);
     this->NumberCell2D++;
@@ -383,6 +390,10 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
             array<unsigned int, 3> T4vertici = {P1, P3, PM};
             array<unsigned int, 3> T4lati = {L13, LM3, L1M};
             double T4area = Area(this->Cell0D[T4vertici[0]],this->Cell0D[T4vertici[1]],this->Cell0D[T4vertici[2]]);
+            if(T4area>this->tolleranza)
+            {
+                this->idAreeDaBisezionare.push_back(std::pair<unsigned int,double>(T4,T4area));
+            }
             this->Cell2D.push_back(Triangolo(T4, T4vertici, T4lati,T4area));
             this->DeleteCell2D.push_back(false);
             this->NumberCell2D++;
@@ -408,6 +419,10 @@ bool TriangularMesh::Bisezione(const unsigned int& idT)
             array<unsigned int, 3> T5vertici = {P2, P3, PM};
             array<unsigned int, 3> T5lati = {L23,LM3, L2M};
             double T5area = Area(this->Cell0D[T5vertici[0]],this->Cell0D[T5vertici[1]],this->Cell0D[T5vertici[2]]);
+            if(T5area>this->tolleranza)
+            {
+                this->idAreeDaBisezionare.push_back(std::pair<unsigned int,double>(T5,T5area));
+            }
             this->Cell2D.push_back(Triangolo(T5, T5vertici,T5lati,T5area));
             this->DeleteCell2D.push_back(false);
             this->NumberCell2D++;
@@ -459,7 +474,6 @@ bool TriangularMesh::ExportMesh(string file0D, string file1D, string file2D)
     }
 
     return true;
-
 }
 
 bool TriangularMesh::ExportCell0Ds(string nomeFile)

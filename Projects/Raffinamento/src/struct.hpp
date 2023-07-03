@@ -69,6 +69,9 @@ namespace ProjectLibrary
         bool Bisezione(const unsigned int& IdT);
         static double Area(const Punto &P1, const Punto &P2, const Punto &P3);
         unsigned int LatoAccanto(const unsigned int& idT,const unsigned int& idL, const unsigned int& idP);
+
+        vector<pair<unsigned int,double>> idAreeDaBisezionare;
+        double tolleranza= 0.002;
     };
 
 }
