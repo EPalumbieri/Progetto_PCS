@@ -11,22 +11,25 @@ using namespace Eigen;
 // qui definisco le classi e gli oggetti
 namespace ProjectLibrary
 {
-    struct Punto
+    class Punto
     {
+    public:
         unsigned int idP;
         Vector2d coordinate;
         Punto(unsigned int id, Vector2d coordinate):idP(id),coordinate(coordinate){}
     };
 
-    struct Lato
+    class Lato
     {
+    public:
        unsigned int idL;
        array<unsigned int, 2> idV;
        Lato(unsigned int idL, array<unsigned int, 2> idV):idL(idL), idV(idV){}
     };
 
-    struct Triangolo
+    class Triangolo
     {
+    public:
         unsigned int idT;
         array<unsigned int, 3> idV;
         array<unsigned int, 3> idL;
@@ -34,8 +37,9 @@ namespace ProjectLibrary
         Triangolo(unsigned int idT, array<unsigned int, 3> idV, array<unsigned int, 3> idL,double Area):idT(idT), idV(idV), idL(idL), Area(Area){}
     };
 
-    struct TriangularMesh
+    class TriangularMesh
     {
+    public:
         bool ExportMesh(string file0D, string file1D, string file2D);
 
         unsigned int NumberCell0D = 0; ///< number of Cell0D

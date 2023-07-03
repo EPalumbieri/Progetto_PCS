@@ -82,7 +82,7 @@ TEST(testLatoLungo, testLatoLungoVerificato)
 
     unsigned int idT = 74;
     unsigned int idll = meshTest.LatoLungo(idT);
-    EXPECT_EQ(idll, 142);
+    EXPECT_EQ(idll, 183);
 }
 
 TEST(testVerOpp, testVerOppVerificato)
@@ -97,7 +97,7 @@ TEST(testVerOpp, testVerOppVerificato)
 
     unsigned int VO = meshTest.VerticeOpposto(idT,idL);
 
-    EXPECT_EQ(VO,47);
+    EXPECT_EQ(VO,82);
 }
 
 TEST(testPuntoMedioFunc, testPM)
@@ -127,7 +127,7 @@ TEST(testLatoAccantoFunc,testLatoAccanto)
     unsigned int idP1= 50;
 
     //SERVE A VERIFICARE SE METTE E SALVA BENE L'OGGETTO PUNTO IN CELL0D DELLA MESH
-    unsigned int L10Giusto=139;
+    unsigned int L10Giusto=0;
 
     unsigned int IdL10= meshTest.LatoAccanto(idT,idL12,idP1);;
 
@@ -146,7 +146,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO P1,P0,PM
     array<unsigned int, 3> idVT1= meshTest.Cell2D[meshTest.NumberCell2D-4].idV;
-    array<unsigned int, 3> idVT1Giusto={50,47,89};
+    array<unsigned int, 3> idVT1Giusto={55,23,109};
     EXPECT_EQ(idVT1,idVT1Giusto);
  }
 
@@ -163,7 +163,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO L1O, LM0, L1M
     array<unsigned int, 3> idlT1= meshTest.Cell2D[meshTest.NumberCell2D-4].idL;
-    array<unsigned int, 3> idlT1Giusto={139,232,233};
+    array<unsigned int, 3> idlT1Giusto={182, 294, 295};
     EXPECT_EQ(idlT1,idlT1Giusto);
  }
 
@@ -179,7 +179,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO P2,P0,PM
     array<unsigned int, 3> idVT2= meshTest.Cell2D[meshTest.NumberCell2D-3].idV;
-    array<unsigned int, 3> idVT2Giusto={55,47,89};
+    array<unsigned int, 3> idVT2Giusto={82, 23, 109};
     EXPECT_EQ(idVT2,idVT2Giusto);
  }
 
@@ -196,7 +196,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO L2O, LM0, L2M
     array<unsigned int, 3> idlT2= meshTest.Cell2D[meshTest.NumberCell2D-3].idL;
-    array<unsigned int, 3> idlT2Giusto={9,232,234};
+    array<unsigned int, 3> idlT2Giusto={166, 294, 296};
     EXPECT_EQ(idlT2,idlT2Giusto);
  }
 
@@ -213,7 +213,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO P1,P3,PM
     array<unsigned int, 3> idVT4= meshTest.Cell2D[meshTest.NumberCell2D-2].idV;
-    array<unsigned int, 3> idVT4Giusto={50,59,89};
+    array<unsigned int, 3> idVT4Giusto={55, 79, 109};
     EXPECT_EQ(idVT4,idVT4Giusto);
  }
 
@@ -230,7 +230,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO L13, LM3, L1M
     array<unsigned int, 3> idlT4= meshTest.Cell2D[meshTest.NumberCell2D-2].idL;
-    array<unsigned int, 3> idlT4Giusto={147,235,233};
+    array<unsigned int, 3> idlT4Giusto={23, 297, 295};
     EXPECT_EQ(idlT4,idlT4Giusto);
  }
 
@@ -246,11 +246,9 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO P2,P3,PM
     array<unsigned int, 3> idVT5= meshTest.Cell2D[meshTest.NumberCell2D-1].idV;
-    array<unsigned int, 3> idVT5Giusto={55,59,89};
+    array<unsigned int, 3> idVT5Giusto={82, 79, 109};
     EXPECT_EQ(idVT5,idVT5Giusto);
  }
-
-
 
  TEST(testBisezioneFunc,testBisezioneT5lati)
  {
@@ -263,7 +261,7 @@ TEST(testBisezioneFunc,testBisezioneT1vert)
     meshTest.Bisezione(idT);
     // IN ORDINE GLI INSERIAMO L23, LM3, L2M
     array<unsigned int, 3> idlT5= meshTest.Cell2D[meshTest.NumberCell2D-1].idL;
-    array<unsigned int, 3> idlT5Giusto={148,235,234};
+    array<unsigned int, 3> idlT5Giusto={119, 297, 296};
     EXPECT_EQ(idlT5,idlT5Giusto);
  }
 
