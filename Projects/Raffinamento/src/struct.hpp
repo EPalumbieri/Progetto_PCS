@@ -71,7 +71,7 @@ namespace ProjectLibrary
         unsigned int LatoAccanto(const unsigned int& idT,const unsigned int& idL, const unsigned int& idP);
 
         vector<pair<unsigned int,double>> idAreeDaBisezionare;
-        double tolleranza= 0.002;
+        double tolleranza= 0.007;
     };
 
 }
