@@ -1,4 +1,4 @@
-#include "struct.hpp"
+#include "classi.hpp"
 #include "sorting.hpp"
 #include <iostream>
 #include "Eigen/Eigen"
