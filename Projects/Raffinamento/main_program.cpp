@@ -15,22 +15,7 @@ int main()
   TriangularMesh mesh;
   mesh.ImportCell0Ds();
   mesh.ImportCell1Ds();
-
-  if(!mesh.ImportCell2Ds())
-   {
-    return 1;
-   }
-  else
-  {
-   cout << "Mappa Adiacenze: " << endl;
-   for(auto it = mesh.Adjacency.begin(); it != mesh.Adjacency.end(); it++) // per tutti i lati
-    {
-     cout << "key:\t" << it -> first << "\t values:";
-     for(const unsigned int id : it -> second)
-       cout << "\t" << id;
-     cout << endl;
-    }
-  }
+  mesh.ImportCell2Ds();
 
 //  // -----------------------------------------------------------------------------------------------------
 //  // OPZIONE 1 TOLLERANZA SUL NUMERO DI TRIANGOLI
@@ -67,7 +52,6 @@ int main()
   // -----------------------------------------------------------------------------------------------------
   // OPZIONE 3 TOLLERANZA AREA VETTORE ORDINATO
   vector<pair<unsigned int, double>> areeOrdinate3 = SortLibrary::HeapSort(mesh.idAreeDaBisezionare);
-  cout<<areeOrdinate3.size()<<"dim areaaord3"<<endl;
   while (areeOrdinate3.size() > 0)
   {
       if(!mesh.DeleteCell2D[areeOrdinate3[0].first] && areeOrdinate3[0].second > mesh.tolleranza)
@@ -87,9 +71,6 @@ int main()
          areeOrdinate3.erase(areeOrdinate3.begin());
       }
   }
-  cout<<areeOrdinate3.size()<<"dim areaaord3"<<endl;
-
-  mesh.ExportMesh("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell0Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell1Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test1/NewCell2Ds.csv");
+  mesh.ExportMesh("/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/NewCell0Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/NewCell1Ds.csv","/Users/claudia/Desktop/Progetto/Progetto_PCS/Projects/Raffinamento/Dataset/Test2/NewCell2Ds.csv");
 }
-
 // (X2-X1)*iHat+(Y2-Y1)*jHat

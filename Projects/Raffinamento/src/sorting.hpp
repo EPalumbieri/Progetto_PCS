@@ -34,7 +34,7 @@ namespace SortLibrary {
  template<typename T>
  void Heapify(vector<T>& sortedV, int n,int i)
  {
-    // Initialize largest as root
+    // Inizializzo il maggiore come la radice
     int largest = i;
 
     // left = 2*i + 1
@@ -43,43 +43,46 @@ namespace SortLibrary {
     // right = 2*i + 2
     int r = 2 * i + 2;
 
-    // If left child is larger than root
+    // Se left è maggiore della radice
     if (l < n && sortedV[l] > sortedV[largest])
         largest = l;
 
-    // If right child is larger than largest
-    // so far
+    // Se right è maggiore della radice
     if (r < n && sortedV[r] > sortedV[largest])
         largest = r;
 
-    // If largest is not root
+    // Se il maggiore non è la radice
     if (largest != i) {
         swap(sortedV[i], sortedV[largest]);
 
-        // Recursively heapify the affected
-        // sub-tree
+        // Applica Heapify ricorsivamente al sottoalbero
         Heapify(sortedV,n, largest);
     };
 }
 
  template<typename T>
+ void CreaHeap(vector<T>& sortedV, int n)
+ {
+     // Costruisco l'heap
+     for (int i = n / 2 - 1; i >= 0; i--)
+         Heapify(sortedV, n, i);
+ }
+
+ template<typename T>
  vector<T> HeapSort(const vector<T>& v)
  {
-    unsigned int n = v.size(); //dimensione vettore
+    unsigned int n = v.size();
     vector<T> sortedV = v;
 
-    // Build heap (rearrange array)
-        for (int i = n / 2 - 1; i >= 0; i--)
-            Heapify(sortedV, n, i);
+    CreaHeap(sortedV, n);
 
-    // One by one extract an element
-    // from heap
+    // Uno alla volta estraggo gli elementi dall'heap
     for (int i = n - 1; i > 0; i--) {
 
-        // Move current root to end
+        // Sposto la radice corrente in fondo
         swap(sortedV[0], sortedV[i]);
 
-        // call max heapify on the reduced heap
+        // Chiamo Heapify all'heap ridotto
         Heapify(sortedV, i, 0);
         }
     return sortedV;

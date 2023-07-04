@@ -6,9 +6,6 @@
 #include <fstream>
 using namespace std;
 using namespace Eigen;
-
-
-// qui definisco le classi e gli oggetti
 namespace ProjectLibrary
 {
     class Punto
@@ -53,7 +50,6 @@ namespace ProjectLibrary
         bool ImportCell1Ds();
         bool ExportCell1Ds(string nomeFile);
 
-
         static double LunghezzaLato(const Punto &P1, const Punto &P2);
         unsigned int PuntoMedio(const unsigned int &idL);
 
@@ -71,9 +67,8 @@ namespace ProjectLibrary
         unsigned int LatoAccanto(const unsigned int& idT,const unsigned int& idL, const unsigned int& idP);
 
         vector<pair<unsigned int,double>> idAreeDaBisezionare;
-        double tolleranza= 0.007;
+        double tolleranza= 0.002;
     };
-
 }
 
 #endif
